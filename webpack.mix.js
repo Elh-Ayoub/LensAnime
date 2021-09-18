@@ -10,8 +10,5 @@ const mix = require('laravel-mix');
  | file for the application as well as bundling up all the JS files.
  |
  */
-
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]);
+ mix.copyDirectory('node_modules/admin-lte/dist', 'public/dist');
+ mix.copyDirectory('node_modules/admin-lte/plugins', 'public/plugins');
