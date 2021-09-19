@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\api\AuthController;
+use Illuminate\Support\Facades\Auth;
 
 class AdminAuthController extends Controller
 {
@@ -56,5 +57,8 @@ class AdminAuthController extends Controller
         }elseif(array_key_exists('fail', $res)){
             return back()->with('fail', $res['fail']);
         }
+    }
+    function AuthUserProfile(){
+        return view('admin.profile', ['user' => Auth::user()]);
     }
 }

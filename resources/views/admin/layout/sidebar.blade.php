@@ -1,8 +1,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{route('admin.dashboard')}}" class="brand-link">
-    <img src="{{asset('images/logo_transparent.png')}}" alt="AdminLTE Logo" class="brand-image img-size-50">
-    <span class="brand-text font-weight-light">LensAnime</span>
+        <img src="{{asset('images/logo_transparent.png')}}" alt="AdminLTE Logo" class="brand-image img-size-50">
+        <span class="brand-text font-weight-light">LensAnime</span>
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -10,20 +10,20 @@
         @if(Auth::user())
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-            <img src="{{Auth::user()->profile_photo}}" class="img-circle elevation-2" alt="User-Image">
+                <img src="{{Auth::user()->profile_photo}}" class="img-circle elevation-2" alt="User-Image">
             </div>
             <div class="info">
-            <a href="" class="d-block">{{Auth::user()->username}}</a>
+                <a href="{{route('admin.profile')}}" class="d-block">{{Auth::user()->username}}</a>
             </div>
         </div>
         @endif
         <!-- SidebarSearch Form -->
         <div class="form-inline mt-4">
             <div class="input-group" data-widget="sidebar-search">
-            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
             <div class="input-group-append">
                 <button class="btn btn-sidebar">
-                <i class="fas fa-search fa-fw"></i>
+                    <i class="fas fa-search fa-fw"></i>
                 </button>
             </div>
             </div>

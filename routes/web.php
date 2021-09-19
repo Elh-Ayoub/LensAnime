@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\Admin\VerifyEmailController;
+use App\Http\Controllers\admin\AdminUserController;
+use App\Models\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,11 +58,26 @@ Route::get('/email/verify/already-success', function(){
     return redirect('admin/auth/login')->with('success', 'Email already verified! Thank you.');
 });
  //////////////////// ----------User module----------  ////////////////////
-Route::group([
+ Route::group([
     'middleware' => 'AuthCheck',
     'prefix' => 'admin',
 ], function () {
+    Route::get('/profile', [AdminAuthController::class, 'AuthUserProfile'])->name('admin.profile');
     Route::get('/home', function () {
-        return view('admin.home');
+        $users = count(User::where('role', 'user')->get());
+        $admins = count(User::where('role', 'admin')->get());
+        return view('Admin.home', ['users' => $users, 'admins' => $admins]);
     })->name('admin.dashboard');
+    Route::get('user/create', function(){
+        return view('Admin.Users.create');
+    })->name('create.user.view');
+    Route::post('user/create', [AdminUserController::class, 'create'])->name('create.user');
+    Route::patch('profile/update/{id}', [AdminUserController::class, 'UpdateAdmin'])->name('admin.update');
+    Route::patch('password/update/', [AdminUserController::class, 'UpdateAdminPassword'])->name('admin.password');
+    Route::patch('avatar/update', [AdminUserController::class, 'UpdateAvatar'])->name('admin.update.avatar');
+    Route::delete('avatar/delete', [AdminUserController::class, 'setDefaultAvatar'])->name('admin.delete.avatar');
+    Route::get('/users', function(){return view('Admin.Users.list', ['users' => User::all()]);})->name('users.list');
+    Route::get('users/update',function(Request $request){$user = User::find($request->user);return view('Admin.Users.profile', ['user' => $user, 'posts' => Post::where('author', $user->id)->get()]);})->name('users.update.view');
+    Route::patch('users/update',[AdminUserController::class, 'updateProfiles'])->name('users.update');
+    Route::delete('users/delete/{id}',[AdminUserController::class, 'destroy'])->name('users.delete');
 });

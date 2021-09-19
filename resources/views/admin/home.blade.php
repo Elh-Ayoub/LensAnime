@@ -29,14 +29,7 @@
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-    <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="{{asset('images/logo_transparent.png')}}" alt="AdminLTELogo" height="250" width="250">
-        </div>
-    <!-- Navbar -->
     @include('admin.layout.navmenu')
-    <!-- /.navbar -->
-    <!-- Main Sidebar Container -->
     @include('admin.layout.sidebar')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -75,7 +68,7 @@
                             <!-- small box -->
                             <div class="small-box bg-danger">
                                 <div class="inner">
-                                    <h3>0</h3>
+                                    <h3>{{$admins}}</h3>
                                     <p>Admins</p>
                                 </div>
                                 <div class="icon">
@@ -88,7 +81,7 @@
                             <!-- small box -->
                             <div class="small-box bg-warning">
                                 <div class="inner">
-                                    <h3>0</h3>
+                                    <h3>{{$users}}</h3>
                                     <p>Users</p>
                                 </div>
                                 <div class="icon">
