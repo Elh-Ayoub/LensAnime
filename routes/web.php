@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\VerifyEmailController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('admin/auth/login');
 });
  //////////////////// ----------Authentication module----------  ////////////////////
  Route::group([
@@ -54,4 +54,13 @@ Route::get('/email/verify/success', function(){
 });
 Route::get('/email/verify/already-success', function(){
     return redirect('admin/auth/login')->with('success', 'Email already verified! Thank you.');
+});
+ //////////////////// ----------User module----------  ////////////////////
+Route::group([
+    'middleware' => 'AuthCheck',
+    'prefix' => 'admin',
+], function () {
+    Route::get('/home', function () {
+        return view('admin.home');
+    })->name('admin.dashboard');
 });

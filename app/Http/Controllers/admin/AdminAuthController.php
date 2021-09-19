@@ -12,7 +12,7 @@ class AdminAuthController extends Controller
         $authcontroller = new AuthController;
         $res = $authcontroller->login($request, "admin");
         if(array_key_exists('success', $res)){
-            return redirect('/');
+            return redirect('/admin/home');
         }elseif(array_key_exists('error', $res)){
             return back()->with('fail', $res['error']);
         }else{
