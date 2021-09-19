@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Auth\Events\Registered;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -20,6 +23,36 @@ class UserController extends Controller
             return $user;
         }else{
             return ['fail' => 'User not found!!'];
+        }
+    }
+    public function create(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required|string|unique:users|between:5,30',
+            'full_name' => 'required|string|between:5,30',
+            'email' => 'required|email|max:50|unique:users',
+            'password' => 'required|string|confirmed|min:8',
+            'role' => 'required|string',
+        ]);
+        if($validator->fails()){
+            return ($validator->errors()->toArray());
+        }
+        $name = substr($request->input('username'), 0, 2);
+        $profile_photo = 'https://ui-avatars.com//api//?name='.$name.'&color=7F9CF5&background=EBF4FF';
+        if($request->file('profile_photo')){
+            $profile_photo = $this->uploadImage($request);
+        }
+        $user = User::create(array_merge(
+            $validator->validated(),
+            ['password' => bcrypt($request->password),
+            'profile_photo' => $profile_photo,
+            ]
+        ));
+        event(new Registered($user));
+        if($user){
+            return ['success' => 'Account created successfully. And an email has been sent to: ' . $user->email];
+        }else{
+            return ['fail' => 'Somthing went wrong! Try again.'];
         }
     }
     public function update(Request $request, $id){
@@ -75,6 +108,15 @@ class UserController extends Controller
             return ['success' => 'Profile picture updated successfully!'];
         }
         return response()->json('error', 404);
+    }
+    function uploadImage($request){
+        $image = $request->file('profile_photo');
+        if($image){
+            $filename = str_replace(' ', '-', $request->input('username')). '.png';
+            $image = $request->file('profile_photo')->store('public');
+            $image1 = $request->file('profile_photo')->move(public_path('/profile-pictures'), $filename);
+            return url('/profile-pictures/' . $filename);
+        }
     }
     public function destroy($id)
     {

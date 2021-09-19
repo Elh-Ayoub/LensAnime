@@ -39,7 +39,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{route('users.list')}}" class="nav-link">
                     <i class="fa fa-user"></i>
                     <p>Manage Users</p>
                 </a>

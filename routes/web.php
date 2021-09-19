@@ -78,6 +78,6 @@ Route::get('/email/verify/already-success', function(){
     Route::delete('avatar/delete', [AdminUserController::class, 'setDefaultAvatar'])->name('admin.delete.avatar');
     Route::get('/users', function(){return view('Admin.Users.list', ['users' => User::all()]);})->name('users.list');
     Route::get('users/update',function(Request $request){$user = User::find($request->user);return view('Admin.Users.profile', ['user' => $user, 'posts' => Post::where('author', $user->id)->get()]);})->name('users.update.view');
-    Route::patch('users/update',[AdminUserController::class, 'updateProfiles'])->name('users.update');
+    Route::patch('users/update/{id}',[AdminUserController::class, 'UpdateAdmin'])->name('users.update');
     Route::delete('users/delete/{id}',[AdminUserController::class, 'destroy'])->name('users.delete');
 });
