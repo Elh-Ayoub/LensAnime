@@ -33,7 +33,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{route('admin.dashboard')}}" class="nav-link">
                     <i class="fa fa-home"></i>
                     <p>Home</p>
                 </a>
@@ -45,7 +45,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{route('animes.list')}}" class="nav-link">
                     <i class="fa fa-film"></i>
                     <p>Manage Animes</p>
                 </a>

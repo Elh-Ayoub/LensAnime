@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\Admin\VerifyEmailController;
 use App\Http\Controllers\admin\AdminUserController;
+use App\Http\Controllers\admin\AdminAnimeController;
 use App\Models\User;
 /*
 |--------------------------------------------------------------------------
@@ -68,16 +69,22 @@ Route::get('/email/verify/already-success', function(){
         $admins = count(User::where('role', 'admin')->get());
         return view('Admin.home', ['users' => $users, 'admins' => $admins]);
     })->name('admin.dashboard');
-    Route::get('user/create', function(){
-        return view('Admin.Users.create');
-    })->name('create.user.view');
     Route::post('user/create', [AdminUserController::class, 'create'])->name('create.user');
     Route::patch('profile/update/{id}', [AdminUserController::class, 'UpdateAdmin'])->name('admin.update');
     Route::patch('password/update/', [AdminUserController::class, 'UpdateAdminPassword'])->name('admin.password');
     Route::patch('avatar/update', [AdminUserController::class, 'UpdateAvatar'])->name('admin.update.avatar');
     Route::delete('avatar/delete', [AdminUserController::class, 'setDefaultAvatar'])->name('admin.delete.avatar');
     Route::get('/users', function(){return view('Admin.Users.list', ['users' => User::all()]);})->name('users.list');
-    Route::get('users/update',function(Request $request){$user = User::find($request->user);return view('Admin.Users.profile', ['user' => $user, 'posts' => Post::where('author', $user->id)->get()]);})->name('users.update.view');
     Route::patch('users/update/{id}',[AdminUserController::class, 'UpdateAdmin'])->name('users.update');
     Route::delete('users/delete/{id}',[AdminUserController::class, 'destroy'])->name('users.delete');
+});
+
+ //////////////////// ----------Anime module----------  ////////////////////
+ Route::group([
+    'middleware' => 'AuthCheck',
+    'prefix' => 'admin',
+], function () {
+    Route::get('/animes', [AdminAnimeController::class, 'index'])->name('animes.list');
+    Route::get('/animes/create', [AdminAnimeController::class, 'create'])->name('animes.create.view');
+    Route::post('/animes/create', [AdminAnimeController::class, 'store'])->name('animes.create');
 });

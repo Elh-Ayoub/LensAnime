@@ -1,0 +1,66 @@
+.chip {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    background-color: #496D89;
+    border-radius: 9999px;
+    padding: 4px 6px;
+}
+
+.chip__content {
+    margin-right: 4px;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    text-align: center;
+    color: white;
+}
+.button_close {
+    /* Reset */
+    background-color: transparent;
+    border-color: transparent;
+
+    /* Cursor */
+    cursor: pointer;
+
+    /* Size */
+    height: 12px;
+    width: 12px;
+
+    /* Used to position the inner */
+    position: relative;
+}
+
+.button__line {
+    /* Background color */
+    background-color: white;
+
+    /* Position */
+    position: absolute;
+
+    /* Size */
+    height: 1px;
+    width: 100%;
+}
+
+.button__line--first {
+    /* Position */
+    left: 0px;
+    top: 50%;
+    transform: translate(0%, -50%) rotate(45deg);
+
+    /* Size */
+    height: 1px;
+    width: 100%;
+}
+
+.button__line--second {
+    /* Position */
+    left: 50%;
+    top: 0px;
+    transform: translate(-50%, 0%) rotate(45deg);
+
+    /* Size */
+    height: 100%;
+    width: 1px;
+}
