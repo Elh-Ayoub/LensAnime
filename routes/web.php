@@ -87,8 +87,8 @@ Route::get('/email/verify/already-success', function(){
     'prefix' => 'admin',
 ], function () {
     Route::get('/animes', [AdminAnimeController::class, 'index'])->name('animes.list');
-    Route::get('/animes/{id}', [AdminAnimeController::class, 'show'])->name('animes.details');
     Route::get('/animes/create', [AdminAnimeController::class, 'create'])->name('animes.create.view');
+    Route::get('/animes/{id}', [AdminAnimeController::class, 'show'])->name('animes.details');
     Route::post('/animes/create', [AdminAnimeController::class, 'store'])->name('animes.create');
     Route::get('/animes/edit/{id}', [AdminAnimeController::class, 'edit'])->name('animes.edit.view');
     Route::patch('/animes/update/{id}', [AdminAnimeController::class, 'update'])->name('animes.update');
