@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\VerifyEmailController;
 use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\AdminAnimeController;
 use App\Models\User;
+use App\Models\Anime;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,7 +68,8 @@ Route::get('/email/verify/already-success', function(){
     Route::get('/home', function () {
         $users = count(User::where('role', 'user')->get());
         $admins = count(User::where('role', 'admin')->get());
-        return view('Admin.home', ['users' => $users, 'admins' => $admins]);
+        $animes = count(Anime::all());
+        return view('Admin.home', ['users' => $users, 'admins' => $admins, 'animes' => $animes]);
     })->name('admin.dashboard');
     Route::post('user/create', [AdminUserController::class, 'create'])->name('create.user');
     Route::patch('profile/update/{id}', [AdminUserController::class, 'UpdateAdmin'])->name('admin.update');
@@ -88,4 +90,6 @@ Route::get('/email/verify/already-success', function(){
     Route::get('/animes/{id}', [AdminAnimeController::class, 'show'])->name('animes.details');
     Route::get('/animes/create', [AdminAnimeController::class, 'create'])->name('animes.create.view');
     Route::post('/animes/create', [AdminAnimeController::class, 'store'])->name('animes.create');
+    Route::get('/animes/edit/{id}', [AdminAnimeController::class, 'edit'])->name('animes.edit.view');
+    Route::patch('/animes/update/{id}', [AdminAnimeController::class, 'update'])->name('animes.update');
 });

@@ -39,12 +39,12 @@
     <section class="content">
       <div>
         <div>
-          <button class="btn btn-primary ml-2 mb-2"><i class="fas fa-plus mr-2"></i>Add episode</button>
-          <button class="btn btn-warning ml-2 mb-2"><i class="fas fa-pen mr-2"></i>Update Anime info</button>
+          <button class="btn btn-primary ml-2 mb-3"><i class="fas fa-plus mr-2"></i>Add episode</button>
+          <a href="{{route('animes.edit.view', $anime->id)}}" class="btn btn-warning ml-2 mb-3"><i class="fas fa-pen mr-2"></i>Update Anime info</a>
         </div>
         <div class="d-flex align-items-start flex-row justify-content-start">
           <div class="col-sm">
-              <div>
+              <div class="fixed">
                 <div class="card" style="width: 18rem;">
                   <img class="card-img-top" src="{{$anime->image}}" alt="Card image cap">
                   <div class="card-body">

@@ -45,7 +45,7 @@ class AnimeController extends Controller
         $image = $this->uploadImage($request);
         $anime = Anime::create(array_merge($request->all(), ['image' => $image, 'created_by' => Auth::id()]));
         if($anime){
-            return ['success' => 'anime created successfully!'];
+            return ['success' => 'Anime created successfully!'];
         }else{
             return ['fail' => 'Something went wrong!'];
         }
@@ -70,27 +70,23 @@ class AnimeController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'title' => ['required', 'string', 'max:100'],
+            'description' => ['required', 'string', 'max:500'],
+            'categories' => ['required', 'max:255'],
+        ]);
+        if($validator->fails()){
+            return ($validator->errors()->toArray());
+        }
+        $anime = Anime::find($id);
+        $image = $anime->image;
+        if($request->file('image')){
+            $image = $this->uploadImage($request);
+        }
+        $anime->update(array_merge($request->all(), ['image' => $image]));
+        return ['success' => 'Anime Updated successfully!'];
     }
 
     /**
