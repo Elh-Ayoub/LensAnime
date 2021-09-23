@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Profile | {{env('APP_NAME')}}</title>
+  <title>Anime list | {{env('APP_NAME')}}</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -43,9 +43,9 @@
         </div>
         @endif
         @if(Session::get('fail'))
-        <div class="alert alert-danger col-sm-3 ml-1" role="alert">
+          <div class="alert alert-danger col-sm-3 ml-1" role="alert">
             {{Session::get('fail')}}
-            </div>
+          </div>
         @endif
             @if(Session::get('fail-arr'))
             <div class="alert alert-danger col-sm-3 ml-1" role="alert">
@@ -58,30 +58,21 @@
     <section class="content">
         <div class="container-fluid">
         <a href="{{route('animes.create.view')}}" class="btn btn-primary col-sm-2"><i class="fas fa-plus"></i>Add anime</a>
-            <div class="row mt-3">
-                <div class="col-md-3">
-                    @foreach($animes as $anime)
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="..." alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Go somewhere</a>
-                        </div>
-                    </div>
-                    @endforeach
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="{{ asset('images/logo.png')}}" alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" class="btn btn-primary">Details<i class="fas fa-arrow-right ml-2"></i></a>
-                        </div>
-                    </div>
+            <div class="row mt-3 d-felx flex-row">
+              @foreach($animes as $anime)
+                <div class="col-sm">
+                  <div class="card" style="width: 18rem;">
+                      <img class="card-img-top" src="{{$anime->image}}" alt="Card image cap">
+                      <div class="card-body">
+                          <h5 class="card-title">{{$anime->title}}</h5>
+                          <p class="card-text">{{$anime->description}}</p>
+                          <a href="{{route('animes.details', $anime->id)}}" class="btn btn-primary">Details</a>
+                      </div>
+                  </div>
                 </div>
+              @endforeach
             </div>
         </div>
-      <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
     <div class="modal fade" id="modal-delete-user">
@@ -103,22 +94,11 @@
                     <button type="submit" class="btn btn-outline-light">Delete</button>
                 </div>
             </form>
-          <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
-      <!-- /.modal -->
   </div>
-  <!-- /.content-wrapper -->
   @include('admin.layout.footer')
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
-
 <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->

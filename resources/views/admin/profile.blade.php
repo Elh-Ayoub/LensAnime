@@ -176,22 +176,11 @@
                     <button type="submit" class="btn btn-outline-light">Delete</button>
                 </div>
             </form>
-          <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
-      <!-- /.modal -->
   </div>
-  <!-- /.content-wrapper -->
   @include('admin.layout.footer')
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
-
 <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- Bootstrap 4 -->

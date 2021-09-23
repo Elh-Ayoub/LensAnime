@@ -25,7 +25,7 @@
   <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css')}}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
-  <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/Logo.png')}}"/>
+  <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo_transparent.png')}}"/>
   <style>.title, .table-row{cursor: pointer;}</style>
 </head>
 <body class="hold-transition sidebar-mini">
@@ -72,7 +72,7 @@
         <div class="form-inline justify-content-between mb-2">
             <button class="btn btn-primary col-sm-2" data-toggle="modal" data-target="#modal-create-user"><i class="fas fa-plus"></i> Create new User/Admin</button>
             <div class="input-group mb-1">
-                <input type="text" id="searchByLogin" type="search" placeholder="Search by login...">
+                <input type="text" id="searchByLogin" type="search" placeholder="Search by username...">
                 <div class="input-group-append">
                     <button class="btn btn-sidebar">
                         <i class="fas fa-search fa-fw"></i>
@@ -101,7 +101,7 @@
                                 <th><i class="fas fa-sort"></i><span class="title">Role</span></th>
                                 <th><i class="fas fa-sort"></i><span class="title">Rating</span></th>
                                 <th><i class="fas fa-sort"></i><span class="title">Created at</span></th>
-                                <th></th>
+                                <th>...</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -215,9 +215,9 @@
                     <div class="form-group">
                         <label for="role">Role</label>
                         <select id="role" name="role" class="form-control custom-select">
-                        <option selected disabled>Select one</option>
-                        <option>user</option>
-                        <option>admin</option>
+                            <option selected disabled>Select one</option>
+                            <option>user</option>
+                            <option>admin</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -240,19 +240,9 @@
             </form>
         </div>
     </div>
-    <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
   @include('admin.layout.footer')
-
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
-
 <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
 <!-- jQuery UI 1.11.4 -->
@@ -289,7 +279,6 @@
 <script src="{{ asset('dist/js/pages/dashboard.js')}}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="{{ asset('js/lazyLoading.js')}}"></script>
 <script src="{{ asset('js/search.js')}}"></script>
 <script src="{{ asset('js/sortTable.js')}}"></script>
 <script src="{{ asset('plugins/ion-rangeslider/js/ion.rangeSlider.min.js')}}"></script>

@@ -28,7 +28,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo_transparent.png')}}"/>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper">
+<div class="wrapper">
     @include('admin.layout.navmenu')
     @include('admin.layout.sidebar')
     <!-- Content Wrapper. Contains page content -->
@@ -160,11 +160,7 @@
             </div>
         </section>
     </div>
-        <!-- /.content -->
-    </div>
     @include('admin.layout.footer')
-    <aside class="control-sidebar control-sidebar-dark">
-    </aside>
 </div>
 <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>

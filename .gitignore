@@ -2,6 +2,8 @@
 /public/hot
 /public/plugins
 /public/profile-pictures
+/public/anime-images
+/public/public
 /public/dist
 /public/storage
 /storage/*.key

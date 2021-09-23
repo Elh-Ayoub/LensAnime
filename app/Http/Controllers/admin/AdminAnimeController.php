@@ -37,7 +37,15 @@ class AdminAnimeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $animecontroller = new AnimeController;
+        $response = $animecontroller->store($request);
+        if(array_key_exists('success', $response)){
+            return back()->with('success', $response['success']);
+        }elseif(array_key_exists('fail', $response)){
+            return back()->with('fail', $response['fail']);
+        }else{
+            return back()->with('fail-arr', $response);
+        }
     }
 
     /**
@@ -48,7 +56,13 @@ class AdminAnimeController extends Controller
      */
     public function show($id)
     {
-        //
+        $animecontroller = new AnimeController;
+        $response = $animecontroller->show($id);
+        if(array_key_exists('success', $response)){
+            return view('admin.Anime.showDetails', ['anime' => $response['success']]);
+        }elseif(array_key_exists('fail', $response)){
+            return back()->with('fail', $response['fail']);
+        }
     }
 
     /**
