@@ -32,6 +32,7 @@ class AnimeController extends Controller
         if($validator->fails()){
             return ($validator->errors()->toArray());
         }
+        $categories = implode(" ", $request->categories);
                         ///---later---
         // $categories = explode(" ", $request->categories);
         // foreach($categories as $category){
@@ -43,7 +44,7 @@ class AnimeController extends Controller
         //     }
         // }
         $image = $this->uploadImage($request);
-        $anime = Anime::create(array_merge($request->all(), ['image' => $image, 'created_by' => Auth::id()]));
+        $anime = Anime::create(array_merge($request->all(), ['image' => $image, 'created_by' => Auth::id(), 'categories' => $categories]));
         if($anime){
             return ['success' => 'Anime created successfully!'];
         }else{
@@ -89,14 +90,13 @@ class AnimeController extends Controller
         return ['success' => 'Anime Updated successfully!'];
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        if(Anime::find($id)){
+            Anime::destroy($id);
+            return ['success' => "Anime deleted successfully!"];
+        }else{
+            return ['fail' => 'Not found!'];
+        }
     }
 }

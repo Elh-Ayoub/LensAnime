@@ -81,7 +81,7 @@
                     <div class="form-group">
                         <label for="categories">Categories</label>
                         <div id="res"></div>
-                        <input type="text" id="categories" name="categories" class="form-control" maxlength="30" value="{{$anime->title}}">
+                        <input type="text" id="categories" name="categories" class="form-control" maxlength="30" value="{{$anime->categories}}">
                     </div>
                     <div class="form-group">
                         <label for="image">Main image</label>
@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <a href="{{route('animes.list')}}" class="btn btn-secondary">Cancel</a>
+                    <a href="{{route('animes.details', $anime->id)}}" class="btn btn-secondary">Cancel</a>
                     <input type="submit" value="Save" class="btn btn-warning float-right">
                 </div>
             </div>

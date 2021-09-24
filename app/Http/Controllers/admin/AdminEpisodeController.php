@@ -4,11 +4,9 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Controllers\api\AnimeController;
-use App\Models\Anime;
-use App\Models\Episode;
+use App\Http\Controllers\api\EpisodeController;
 
-class AdminAnimeController extends Controller
+class AdminEpisodeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +15,7 @@ class AdminAnimeController extends Controller
      */
     public function index()
     {
-        $animecontroller = new AnimeController;
-        return view('admin.Anime.list', ['animes' => $animecontroller->index()]);
+        //
     }
 
     /**
@@ -28,7 +25,7 @@ class AdminAnimeController extends Controller
      */
     public function create()
     {
-        return view('admin.Anime.create');
+        //
     }
 
     /**
@@ -39,8 +36,8 @@ class AdminAnimeController extends Controller
      */
     public function store(Request $request)
     {
-        $animecontroller = new AnimeController;
-        $response = $animecontroller->store($request);
+        $episodecontroller = new EpisodeController;
+        $response = $episodecontroller->store($request);
         if(array_key_exists('success', $response)){
             return back()->with('success', $response['success']);
         }elseif(array_key_exists('fail', $response)){
@@ -58,15 +55,7 @@ class AdminAnimeController extends Controller
      */
     public function show($id)
     {
-        $animecontroller = new AnimeController;
-        $response = $animecontroller->show($id);
-        if(array_key_exists('success', $response)){
-            //get anime's episodes
-            $episodes = Episode::where('anime_id', $response['success']->id)->get();
-            return view('admin.Anime.showDetails', ['anime' => $response['success'], 'episodes' => $episodes]);
-        }elseif(array_key_exists('fail', $response)){
-            return back()->with('fail', $response['fail']);
-        }
+        //
     }
 
     /**
@@ -77,10 +66,7 @@ class AdminAnimeController extends Controller
      */
     public function edit($id)
     {
-        $anime = Anime::find($id);
-        if($anime){
-            return view('admin.Anime.edit', ['anime' => $anime]);
-        }
+        //
     }
 
     /**
@@ -92,13 +78,7 @@ class AdminAnimeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $animecontroller = new AnimeController;
-        $response = $animecontroller->update($request, $id);
-        if(array_key_exists('success', $response)){
-            return back()->with('success', $response['success']);
-        }else{
-            return back()->with('fail-arr', $response);
-        }
+        //
     }
 
     /**
@@ -109,12 +89,6 @@ class AdminAnimeController extends Controller
      */
     public function destroy($id)
     {
-        $animecontroller = new AnimeController;
-        $response = $animecontroller->destroy($id);
-        if(array_key_exists('success', $response)){
-            return redirect('/admin/animes')->with('success', $response['success']);
-        }else{
-            return back()->with('fail', $response);
-        }
+        //
     }
 }

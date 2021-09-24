@@ -80,7 +80,7 @@
                           <div class="form-group">
                               <label for="categories">Categories</label>
                               <div id="res"></div>
-                              <input type="text" id="categories" name="categories" class="form-control" maxlength="30">
+                              <input type="text" id="categories" name="cat" class="form-control" maxlength="30">
                           </div>
                           <div class="form-group">
                               <label for="image">Main image</label>

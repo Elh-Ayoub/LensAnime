@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\Admin\VerifyEmailController;
 use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\AdminAnimeController;
+use App\Http\Controllers\admin\AdminEpisodeController;
 use App\Models\User;
 use App\Models\Anime;
 /*
@@ -92,4 +93,12 @@ Route::get('/email/verify/already-success', function(){
     Route::post('/animes/create', [AdminAnimeController::class, 'store'])->name('animes.create');
     Route::get('/animes/edit/{id}', [AdminAnimeController::class, 'edit'])->name('animes.edit.view');
     Route::patch('/animes/update/{id}', [AdminAnimeController::class, 'update'])->name('animes.update');
+    Route::delete('/animes/delete/{id}', [AdminAnimeController::class, 'destroy'])->name('animes.delete');
+});
+ //////////////////// ----------Episode module----------  ////////////////////
+ Route::group([
+    'middleware' => 'AuthCheck',
+    'prefix' => 'admin',
+], function () {
+    Route::post('/animes/episode/create', [AdminEpisodeController::class, 'store'])->name('episode.create');
 });
