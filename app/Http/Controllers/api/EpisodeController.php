@@ -24,7 +24,7 @@ class EpisodeController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'number' => ['required', 'string', 'max:100'],
+            'number' => ['required'],
             'description' => ['max:500'],
             'server_name' => ['required'],
             'src' => ['required'],
@@ -80,38 +80,48 @@ class EpisodeController extends Controller
             return ['fail' => 'Not found!'];
         }
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
+    
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'number' => ['required'],
+            'description' => ['max:500'],
+            'server_name' => ['required'],
+            'src' => ['required'],
+        ]);
+        if($validator->fails()){
+            return ($validator->errors()->toArray());
+        }
+        $episode = Episode::find($id);
+        if(!$episode){
+            return ['fail' => 'Not found!'];
+        }
+        $videos = [];
+        for($i=0; $i < count($request->src); $i++){
+            array_push($videos, $request->server_name[$i] . " | " . $request->src[$i]);
+        }
+        $episode->update(array_merge($request->all(), ['videos' => implode(",", $videos)]));
+        if($episode){
+            return ['success' => 'episode updated successfully!'];
+        }else{
+            return ['fail' => 'Something went wrong!'];
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy($id)
     {
-        //
+        if(Episode::find($id)){
+            Episode::destroy($id);
+            return ['success' => 'Episode deleted successfully!'];
+        }else{
+            return ['fail' => 'Episode not found!'];
+        }
     }
 }

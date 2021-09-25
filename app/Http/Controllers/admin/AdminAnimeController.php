@@ -63,6 +63,7 @@ class AdminAnimeController extends Controller
         if(array_key_exists('success', $response)){
             //get anime's episodes
             $episodes = Episode::where('anime_id', $response['success']->id)->get();
+            $episodes = $episodes->sortBy('number');
             return view('admin.Anime.showDetails', ['anime' => $response['success'], 'episodes' => $episodes]);
         }elseif(array_key_exists('fail', $response)){
             return back()->with('fail', $response['fail']);

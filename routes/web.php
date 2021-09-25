@@ -8,6 +8,8 @@ use App\Http\Controllers\admin\AdminAnimeController;
 use App\Http\Controllers\admin\AdminEpisodeController;
 use App\Models\User;
 use App\Models\Anime;
+use App\Models\Episode;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -70,7 +72,8 @@ Route::get('/email/verify/already-success', function(){
         $users = count(User::where('role', 'user')->get());
         $admins = count(User::where('role', 'admin')->get());
         $animes = count(Anime::all());
-        return view('Admin.home', ['users' => $users, 'admins' => $admins, 'animes' => $animes]);
+        $episodes = count(Episode::all());
+        return view('Admin.home', ['users' => $users, 'admins' => $admins, 'animes' => $animes, 'episodes' => $episodes]);
     })->name('admin.dashboard');
     Route::post('user/create', [AdminUserController::class, 'create'])->name('create.user');
     Route::patch('profile/update/{id}', [AdminUserController::class, 'UpdateAdmin'])->name('admin.update');
@@ -102,4 +105,6 @@ Route::get('/email/verify/already-success', function(){
 ], function () {
     Route::post('/animes/episode/create', [AdminEpisodeController::class, 'store'])->name('episode.create');
     Route::get('/animes/episode/{id}', [AdminEpisodeController::class, 'show'])->name('episode.details');
+    Route::patch('/animes/episode/{id}', [AdminEpisodeController::class, 'update'])->name('episode.update');
+    Route::delete('/animes/episode/{id}', [AdminEpisodeController::class, 'destroy'])->name('episode.delete');
 });

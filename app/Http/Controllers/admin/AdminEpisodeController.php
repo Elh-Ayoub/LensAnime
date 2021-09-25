@@ -21,16 +21,6 @@ class AdminEpisodeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -61,6 +51,7 @@ class AdminEpisodeController extends Controller
         $response = $episodecontroller->show($id);
         if(array_key_exists('success', $response)){
             $all_episodes = Episode::where('anime_id', $response['success']->anime_id)->get();
+            $all_episodes = $all_episodes->sortBy('number');
             return view('admin.Episodes.index', [
                 'episode' => $response['success'],
                 'all_episodes' => $all_episodes,
@@ -73,17 +64,6 @@ class AdminEpisodeController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -92,7 +72,14 @@ class AdminEpisodeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $episodecontroller = new EpisodeController;
+        $anime_id = Episode::find($id)->anime_id;
+        $response = $episodecontroller->update($request, $id);
+        if(array_key_exists('success', $response)){
+            return back()->with('success', $response['success']);
+        }elseif(array_key_exists('fail', $response)){
+            return back()->with('fail', $response['fail']);
+        }
     }
 
     /**
@@ -103,6 +90,13 @@ class AdminEpisodeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $episodecontroller = new EpisodeController;
+        $anime_id = Episode::find($id)->anime_id;
+        $response = $episodecontroller->destroy($id);
+        if(array_key_exists('success', $response)){
+            return redirect('admin/animes/' . $anime_id)->with('success', $response['success']);
+        }elseif(array_key_exists('fail', $response)){
+            return back()->with('fail', $response['fail']);
+        }
     }
 }
