@@ -58,10 +58,10 @@
     <section class="content">
         <div class="container-fluid">
         <a href="{{route('animes.create.view')}}" class="btn btn-primary col-sm-2"><i class="fas fa-plus"></i>Add anime</a>
-            <div class="row mt-3 d-felx flex-row">
+            <div class="row mt-3 flex-row justify-content-start">
               @foreach($animes as $anime)
-                <div class="col-sm">
-                  <div class="card" style="width: 18rem;">
+                <div class="m-1">
+                  <div class="card" style="width: 16rem;">
                       <img class="card-img-top" src="{{$anime->image}}" alt="Card image cap">
                       <div class="card-body">
                           <h5 class="card-title">{{$anime->title}}</h5>

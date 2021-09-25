@@ -5,6 +5,8 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\api\EpisodeController;
+use App\Models\Episode;
+use App\Models\Anime;
 
 class AdminEpisodeController extends Controller
 {
@@ -55,7 +57,19 @@ class AdminEpisodeController extends Controller
      */
     public function show($id)
     {
-        //
+        $episodecontroller = new EpisodeController;
+        $response = $episodecontroller->show($id);
+        if(array_key_exists('success', $response)){
+            $all_episodes = Episode::where('anime_id', $response['success']->anime_id)->get();
+            return view('admin.Episodes.index', [
+                'episode' => $response['success'],
+                'all_episodes' => $all_episodes,
+                'servers' => explode(',', $response['success']->videos),
+                'anime' => Anime::find($response['success']->anime_id),
+            ]);
+        }elseif(array_key_exists('fail', $response)){
+            return back()->with('fail', $response['fail']);
+        }
     }
 
     /**

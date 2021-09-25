@@ -15,9 +15,9 @@ class CreateEpisodesTable extends Migration
     {
         Schema::create('episodes', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->integer('number');
             $table->text('description')->nullable();
-            $table->text('video');
+            $table->text('videos');
             $table->integer('created_by');
             $table->integer('anime_id');
             $table->integer('rating')->default(0);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Anime;
 use Illuminate\Http\Request;
 use App\Models\Episode;
 use Illuminate\Support\Facades\Auth;
@@ -23,25 +24,29 @@ class EpisodeController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title' => ['required', 'string', 'max:100'],
+            'number' => ['required', 'string', 'max:100'],
             'description' => ['max:500'],
-            'video' => ['required'],
+            'server_name' => ['required'],
+            'src' => ['required'],
         ]);
         if($validator->fails()){
             return ($validator->errors()->toArray());
         }
-        
-        if($request->file('video')){
-            $video = $this->uploadVideo($request);
-        }
-                //later using link
-        // else{
-        //     $video = $request->video;
+        // if($request->file('video')){
+        //     $video = $this->uploadVideo($request);
         // }
+        //         // later using link
+        // // else{
+        // //     $video = $request->video;
+        // // }
+        $videos = [];
+        for($i=0; $i < count($request->src); $i++){
+            array_push($videos, $request->server_name[$i] . " | " . $request->src[$i]);
+        }
         $episode = Episode::create([
-            'title' => $request->title,
+            'number' => $request->number,
             'description' => $request->description,
-            'video' => $video,
+            'videos' => implode(",", $videos),
             'created_by' => Auth::id(),
             'anime_id' => $request->anime_id,
         ]);
@@ -51,34 +56,29 @@ class EpisodeController extends Controller
             return ['fail' => 'Something went wrong!'];
         }
     }
-    // public function uploadVideo($request)
-    // {
-    //     $file = $request->file('video');
-    //     $filename = $file->getClientOriginalName();
-    //     $path = public_path().'/episodes/';
-    //     return $file->move($path, $filename);
-    // }
+
     public function uploadVideo($request){
         $video = $request->file('video');
         if($video){
             $filename = $video->getClientOriginalName();
+            $anime_name = Anime::find($request->anime_id)->title;
             $video = $request->file('video')->store('public');
-            $video1 = $request->file('video')->move(public_path('/episodes'), $filename);
+            $video1 = $request->file('video')->move(public_path('/episodes/' . $anime_name), $filename);
             return url('/episodes/' . $filename);
         }
     }
     public function getAnimesEpisodes($anime_id){
        return Episode::where('anime_id', $anime_id)->get();
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
-        //
+        $ep = Episode::find($id);
+        if($ep){
+            return ['success' => $ep];
+        }else{
+            return ['fail' => 'Not found!'];
+        }
     }
 
     /**

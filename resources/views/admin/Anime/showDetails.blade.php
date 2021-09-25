@@ -109,14 +109,16 @@
             <div class="card-body">
               <div class="tab-content">
                 <div class="active tab-pane" id="episodes">
-                  <div class="row d-flex flex-row justify-content-start">
+                  <div class="row flex-row justify-content-start">
                     @foreach($episodes as $ep)
-                      <div class="card col-sm mr-2" style="width: 10rem;">
+                    <a href="{{route('episode.details', $ep->id)}}" class="mr-2">
+                      <div class="card" style="width: 8rem;">
                         <img class="card-img-top" src="{{$anime->image}}" alt="Card image cap">
                         <div class="card-body">
-                          <p>{{$ep->title}}</p>
+                          <p class="text-center text-bold">Episode - {{$ep->number}}</p>
                         </div>
                       </div>
+                    </a>
                     @endforeach
                   </div>
                 </div>
@@ -165,28 +167,31 @@
               @csrf
               <div class="modal-body">
                 <div class="form-group">
-                    <label for="title">Title</label>
-                    <input type="text" id="title" name="title" class="form-control" maxlength="40">
+                    <label for="number">Episode number</label>
+                    <input type="number" id="number" name="number" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="description">Description <span class="small">(optional)</span></label>
                     <textarea type="text" id="description" name="description" class="form-control" maxlength="500"></textarea>
                 </div>
                 <ul class="nav nav-pills">
-                    <li class="nav-item"><a class="nav-link active" href="#byVideo" data-toggle="tab">Import episode Video</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#byLink" data-toggle="tab">Import by link</a></li>            
+                    <li class="nav-item"><a class="nav-link" href="#byLink" data-toggle="tab">Import by Embed src link</a></li>            
                 </ul>
                 <div class="tab-content">
-                  <div class="active tab-pane" id="byVideo">
-                      <label for="video">Import episode Video</label>
-                      <input type="file" id="video" name="video" class="form-control">
+                  <div class="active tab-pane server_links" id="byLink">
+                    <div class="d-flex">
+                      <input type="text" id="server_name" name="server_name[]" class="form-control" placeholder="server name" style="width: 35%;">
+                      <input type="text" id="src" name="src[]" class="form-control" placeholder="Embed code src link">
+                    </div>
+                    
                   </div>
+                  <div type="button" id="add_ep_server" class="btn btn-success mt-2">Add server</div>
                 </div>
               </div>
-              <div class="progress mt-2">
+              <!-- <div class="progress mt-2">
                 <div class="bar bg-blue"></div>
                 <div class="percent text-bold">0%</div>
-              </div>
+              </div> -->
               <div class="modal-footer justify-content-between">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary">Add</button>
@@ -211,28 +216,14 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.js"></script> 
 <script type="text/javascript">
 $(function() {
-    $(document).ready(function()
-    {
-      var bar = $('.bar');
-      var percent = $('.percent');
-        $('#ep-form').ajaxForm({
-          beforeSend: function() {
-              var percentVal = '0%';
-              bar.width(percentVal)
-              percent.html(percentVal);
-          },
-          uploadProgress: function(event, position, total, percentComplete) {
-              var percentVal = percentComplete + '%';
-              bar.width(percentVal)
-              percent.html(percentVal);
-          },
-          complete: function(xhr) {
-              alert('File Has Been Uploaded Successfully');
-              location.reload();
-          }
-        });
-    }); 
- });
+    $('#add_ep_server').click(function(){
+      var row = '<div class="d-flex added_server">'+
+                      '<input type="text" id="server_name" name="server_name[]" class="form-control" placeholder="server name" style="width: 35%;">'+
+                      '<input type="text" id="src" name="src[]" class="form-control" placeholder="Embed code src link">'+
+                      '<div class="btn btn-danger" id="remove_server" onClick="$(this).parent().remove();"><i class="fas fa-trash"><i/></div></div>'
+      $('.server_links').append(row)
+    })
+});
 </script>
 </body>
 </html>

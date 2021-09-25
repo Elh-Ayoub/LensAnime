@@ -101,4 +101,5 @@ Route::get('/email/verify/already-success', function(){
     'prefix' => 'admin',
 ], function () {
     Route::post('/animes/episode/create', [AdminEpisodeController::class, 'store'])->name('episode.create');
+    Route::get('/animes/episode/{id}', [AdminEpisodeController::class, 'show'])->name('episode.details');
 });

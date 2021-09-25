@@ -9,11 +9,11 @@ class Episode extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'title',
+        'number',
         'description',
         'created_by',
         'anime_id',
         'rating',
-        'video',
+        'videos',
     ];
 }
