@@ -105,9 +105,9 @@ class EpisodeController extends Controller
         if(!$episode){
             return ['fail' => 'Not found!'];
         }
-        $servers = Servers::where('episode_id', $id)->get();
+        Servers::where('episode_id', $id)->delete();
         for($i=0; $i < count($request->src); $i++){
-            $servers[$i]->update([
+            $server = Servers::create([
                 'name' => $request->server_name[$i],
                'url' => $request->src[$i],
                'purpose' => $request->purpose[$i],
