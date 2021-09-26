@@ -167,7 +167,7 @@
       </div>
     </div>
     <div class="modal fade" id="modal-add-episode">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Add episode</h4>
@@ -194,8 +194,11 @@
                     <div class="d-flex">
                       <input type="text" id="server_name" name="server_name[]" class="form-control" placeholder="server name" style="width: 35%;">
                       <input type="text" id="src" name="src[]" class="form-control" placeholder="Embed code src link">
+                      <select id="purpose" name="purpose[]" class="form-control custom-select"style="width: 20%;">
+                        <option selected>watch</option>
+                        <option>download</option>
+                      </select>
                     </div>
-                    
                   </div>
                   <div type="button" id="add_ep_server" class="btn btn-success mt-2">Add server</div>
                 </div>
@@ -232,7 +235,12 @@ $(function() {
       var row = '<div class="d-flex added_server">'+
                       '<input type="text" id="server_name" name="server_name[]" class="form-control" placeholder="server name" style="width: 35%;">'+
                       '<input type="text" id="src" name="src[]" class="form-control" placeholder="Embed code src link">'+
-                      '<div class="btn btn-danger" id="remove_server" onClick="$(this).parent().remove();"><i class="fas fa-trash"><i/></div></div>'
+                     ' <select id="purpose" name="purpose[]" class="form-control custom-select">'+
+                       ' <option selected>watch</option>'+
+                        '<option>download</option>'+
+                      '</select>'+
+                      '<div class="btn btn-danger" id="remove_server" onClick="$(this).parent().remove();"><i class="fas fa-trash"><i/></div>'+
+                      '</div>'
       $('.server_links').append(row)
     })
 });

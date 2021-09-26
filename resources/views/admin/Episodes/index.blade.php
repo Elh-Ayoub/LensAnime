@@ -18,8 +18,8 @@
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
-    @include('admin.layout.navmenu')
-    @include('admin.layout.sidebar')
+  @include('admin.layout.navmenu')
+  @include('admin.layout.sidebar')
   <div class="content-wrapper">
     <section class="content-header">
       <div class="container-fluid">
@@ -65,7 +65,7 @@
         <div class="episode-container align-items-start flex-row-reverse justify-content-start">
             <div class="w-100">
                 <div class="embed-responsive embed-responsive-21by9">
-                    <iframe id="episode" class="embed-responsive-item" frameborder="0" src="{{explode(' | ', $servers[0])[1]}}" allowfullscreen></iframe>
+                    <iframe id="episode" class="embed-responsive-item" frameborder="0" src="{{$watching_servers[0]->url}}" allowfullscreen></iframe>
                 </div>
                 <div class="mb-3 d-flex justify-content-start align-content-center">
                     <a href="#" class="m-2"><i class="far fa-thumbs-up"></i>Like</a>
@@ -74,12 +74,13 @@
             </div>
             <div class="col-sm">
                 <div class="fixed">
-                    <div class="card" style="width: 16rem;">
+                    <div class="card" style="width: 20rem;">
                     <div class="card-body">
                         <h3>{{$anime->title}}</h3>
                         <ul class="nav nav-pills row mb-3 justify-content-between">
                             <li class="nav-item"><a class="nav-link active" href="#eps" data-toggle="tab">Episodes</a></li>            
                             <li class="nav-item"><a class="nav-link" href="#servers" data-toggle="tab">servers</a></li>            
+                            <li class="nav-item"><a class="nav-link" href="#downloads" data-toggle="tab">downloads</a></li>            
                         </ul>
                         <div class="tab-content" style="height: 50vh;overflow-y: scroll;">
                             <div class="active tab-pane" id="eps">
@@ -93,10 +94,19 @@
                             </div>
                             <div class="tab-pane" id="servers">
                                 <ul class="nav nav-pills flex-column">
-                                @foreach($servers as $server)
-                                    <li class="nav-item text-bold text-center bg-secondary p-2 server-link mb-1" data-src="{{explode(' | ', $server)[1]}}" style="cursor: pointer;">
-                                        {{explode(" | ", $server)[0]}}
+                                @foreach($watching_servers as $w_server)
+                                    <li class="nav-item text-bold text-center bg-secondary p-2 server-link mb-1" data-src="{{$w_server->url}}" style="cursor: pointer;">
+                                        {{$w_server->name}}
                                     </li>
+                                @endforeach
+                                </ul>
+                            </div>
+                            <div class="tab-pane" id="downloads">
+                                <ul class="nav nav-pills flex-column">
+                                @foreach($download_servers as $d_server)
+                                    <a class="nav-item text-bold text-center bg-secondary p-2 mb-1" href="{{$d_server->url}}" target="_blank" style="cursor: pointer;">
+                                        {{$d_server->name}}
+                                    </a>
                                 @endforeach
                                 </ul>
                             </div>
@@ -136,7 +146,7 @@
       </div>
     </div>
     <div class="modal fade" id="modal-update-ep">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Update episode</h4>
@@ -161,10 +171,15 @@
                 </ul>
                 <div class="tab-content">
                   <div class="active tab-pane server_links" id="byLink">
-                    @foreach($servers as $server)
+                    @foreach($watching_servers->merge($download_servers) as $server)
                     <div class="d-flex">
-                      <input type="text" id="server_name" name="server_name[]" class="form-control" placeholder="server name" style="width: 35%;" value='{{explode(" | ", $server)[0]}}'>
-                      <input type="text" id="src" name="src[]" class="form-control" placeholder="Embed code src link" value='{{explode(" | ", $server)[1]}}'>
+                      <input type="text" id="server_name" name="server_name[]" class="form-control" placeholder="server name" style="width: 35%;" value='{{$server->name}}'>
+                      <input type="text" id="src" name="src[]" class="form-control" placeholder="Embed code src link" value='{{$server->url}}'>
+                      <select id="purpose" name="purpose[]" class="form-control custom-select" style="width: 20%;">
+                        <option selected>{{$server->purpose}}</option>
+                        <option>watch</option>
+                        <option>download</option>
+                      </select>
                       <div class="btn btn-danger" id="remove_server" onClick="$(this).parent().remove();"><i class="fas fa-trash"></i></div>
                     </div>
                     @endforeach
@@ -202,10 +217,15 @@ $(document).ready(function(){
     })
     $(function() {
         $('#add_ep_server').click(function(){
-        var row = '<div class="d-flex added_server">'+
-                        '<input type="text" id="server_name" name="server_name[]" class="form-control" placeholder="server name" style="width: 35%;">'+
-                        '<input type="text" id="src" name="src[]" class="form-control" placeholder="Embed code src link">'+
-                        '<div class="btn btn-danger" id="remove_server" onClick="$(this).parent().remove();"><i class="fas fa-trash"></i></div></div>'
+          var row = '<div class="d-flex added_server">'+
+                      '<input type="text" id="server_name" name="server_name[]" class="form-control" placeholder="server name" style="width: 35%;">'+
+                      '<input type="text" id="src" name="src[]" class="form-control" placeholder="Embed code src link">'+
+                     ' <select id="purpose" name="purpose[]" class="form-control custom-select" style="width: 20%;">'+
+                       ' <option selected>watch</option>'+
+                        '<option>download</option>'+
+                      '</select>'+
+                      '<div class="btn btn-danger" id="remove_server" onClick="$(this).parent().remove();"><i class="fas fa-trash"><i/></div>'+
+                      '</div>'
         $('.server_links').append(row)
         })
     });

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Anime;
 use Illuminate\Http\Request;
 use App\Models\Episode;
+use App\Models\Servers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -29,32 +30,29 @@ class EpisodeController extends Controller
             'server_name' => ['required'],
             'src' => ['required'],
             'anime_id' => ['required'],
+            'purpose' => ['required'],
         ]);
         if($validator->fails()){
             return ($validator->errors()->toArray());
         }
-        // if($request->file('video')){
-        //     $video = $this->uploadVideo($request);
-        // }
-        //         // later using link
-        // // else{
-        // //     $video = $request->video;
-        // // }
         if(Episode::where('number', $request->number)->first()){
             return ['fail' => 'This episode number alredy exist!'];
-        }
-        $videos = [];
-        for($i=0; $i < count($request->src); $i++){
-            array_push($videos, $request->server_name[$i] . " | " . $request->src[$i]);
         }
         $episode = Episode::create([
             'number' => $request->number,
             'description' => $request->description,
-            'videos' => implode(",", $videos),
             'created_by' => Auth::id(),
             'anime_id' => $request->anime_id,
         ]);
         if($episode){
+            for($i=0; $i < count($request->src); $i++){
+                $server = Servers::create([
+                   'name' => $request->server_name[$i],
+                   'url' => $request->src[$i],
+                   'purpose' => $request->purpose[$i],
+                   'episode_id' => $episode->id,
+                ]);
+            }
             return ['success' => 'episode created successfully!'];
         }else{
             return ['fail' => 'Something went wrong!'];
@@ -98,6 +96,7 @@ class EpisodeController extends Controller
             'description' => ['max:500'],
             'server_name' => ['required'],
             'src' => ['required'],
+            'purpose' => ['required'],
         ]);
         if($validator->fails()){
             return ($validator->errors()->toArray());
@@ -106,11 +105,16 @@ class EpisodeController extends Controller
         if(!$episode){
             return ['fail' => 'Not found!'];
         }
-        $videos = [];
+        $servers = Servers::where('episode_id', $id)->get();
         for($i=0; $i < count($request->src); $i++){
-            array_push($videos, $request->server_name[$i] . " | " . $request->src[$i]);
+            $servers[$i]->update([
+                'name' => $request->server_name[$i],
+               'url' => $request->src[$i],
+               'purpose' => $request->purpose[$i],
+               'episode_id' => $episode->id,
+            ]);
         }
-        $episode->update(array_merge($request->all(), ['videos' => implode(",", $videos)]));
+        $episode->update(array_merge($request->all()));
         if($episode){
             return ['success' => 'episode updated successfully!'];
         }else{

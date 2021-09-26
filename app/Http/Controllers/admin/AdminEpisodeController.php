@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\api\EpisodeController;
 use App\Models\Episode;
 use App\Models\Anime;
+use App\Models\Servers;
 
 class AdminEpisodeController extends Controller
 {
@@ -55,7 +56,8 @@ class AdminEpisodeController extends Controller
             return view('admin.Episodes.index', [
                 'episode' => $response['success'],
                 'all_episodes' => $all_episodes,
-                'servers' => explode(',', $response['success']->videos),
+                'watching_servers' => Servers::where(['episode_id' => $id, 'purpose' => 'watch'])->get(),
+                'download_servers' => Servers::where(['episode_id' => $id, 'purpose' => 'download'])->get(),
                 'anime' => Anime::find($response['success']->anime_id),
             ]);
         }elseif(array_key_exists('fail', $response)){

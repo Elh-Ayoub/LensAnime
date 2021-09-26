@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEpisodesTable extends Migration
+class CreateServersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateEpisodesTable extends Migration
      */
     public function up()
     {
-        Schema::create('episodes', function (Blueprint $table) {
+        Schema::create('servers', function (Blueprint $table) {
             $table->id();
-            $table->integer('number');
-            $table->text('description')->nullable();
-            
-            $table->integer('created_by');
-            $table->integer('anime_id');
-            $table->integer('rating')->default(0);
+            $table->text('name');
+            $table->text('url');
+            $table->integer('episode_id');
+            $table->enum('purpose', ['watch','download']);
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ class CreateEpisodesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('episodes');
+        Schema::dropIfExists('servers');
     }
 }
