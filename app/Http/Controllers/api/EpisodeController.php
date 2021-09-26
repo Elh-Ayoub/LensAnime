@@ -28,6 +28,7 @@ class EpisodeController extends Controller
             'description' => ['max:500'],
             'server_name' => ['required'],
             'src' => ['required'],
+            'anime_id' => ['required'],
         ]);
         if($validator->fails()){
             return ($validator->errors()->toArray());
@@ -39,6 +40,9 @@ class EpisodeController extends Controller
         // // else{
         // //     $video = $request->video;
         // // }
+        if(Episode::where('number', $request->number)->first()){
+            return ['fail' => 'This episode number alredy exist!'];
+        }
         $videos = [];
         for($i=0; $i < count($request->src); $i++){
             array_push($videos, $request->server_name[$i] . " | " . $request->src[$i]);

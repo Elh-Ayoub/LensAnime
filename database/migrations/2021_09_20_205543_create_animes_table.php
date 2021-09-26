@@ -21,6 +21,9 @@ class CreateAnimesTable extends Migration
             $table->integer('rating')->default(0);
             $table->integer('episodes_num')->nullable();
             $table->integer('episode_duration')->nullable();
+            $table->integer('year_of_release')->nullable();
+            $table->text('studio')->nullable();
+            $table->enum('age_class', ['G','M', 'R +17', 'X +16'])->default('G');
             $table->text('categories');
             $table->text('image');
             $table->enum('completed', ['Yes','No'])->default('No');

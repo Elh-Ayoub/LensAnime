@@ -17,6 +17,10 @@ class Anime extends Model
         'episode_duration',
         'categories',
         'image',
+        'completed',
+        'year_of_release',
+        'studio',
+        'age_class',
     ];
 
 }

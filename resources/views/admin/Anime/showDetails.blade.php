@@ -29,8 +29,8 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Create anime</li>
+              <li class="breadcrumb-item">Home</li>
+              <li class="breadcrumb-item active">{{$anime->title}}</li>
             </ol>
           </div>
         </div>
@@ -41,19 +41,19 @@
     <section class="content">
       <div>
         @if(Session::get('success'))
-          <div class="alert alert-success">
+          <div class="alert alert-success text-center">
             {{Session::get('success')}}
           </div>
         @endif
         @if(Session::get('fail'))
-          <div class="alert alert-danger">
+          <div class="alert alert-danger text-center">
             {{Session::get('fail')}}
           </div>
         @endif
         @if(Session::get('fail-arr'))
           <div class="input-field">
             @foreach(Session::get('fail-arr') as $key => $err)
-            <p class="alert alert-danger">{{$key . ': ' . $err[0]}}</p>
+            <p class="alert alert-danger text-center">{{$key . ': ' . $err[0]}}</p>
             @endforeach
           </div>
         @endif
@@ -77,6 +77,18 @@
                     </div>
                     <div class="w-75 d-flex justify-content-between align-content-center m-auto">
                       <span class="text-bold text-purple">Duration of episodes :</span><span>{{$anime->episode_duration ? ($anime->episode_duration) : ("?")}}</span>
+                    </div>
+                    <div class="w-75 d-flex justify-content-between align-content-center m-auto">
+                      <span class="text-bold text-purple">Completed :</span><span class="text-bold">{{$anime->completed}}</span>
+                    </div>
+                    <div class="w-75 d-flex justify-content-between align-content-center mt-3 mr-auto ml-auto">
+                      <span class="text-bold text-purple">Year of release :</span><span>{{$anime->year_of_release ? ($anime->year_of_release) : ("?")}}</span>
+                    </div>
+                    <div class="w-75 d-flex justify-content-between align-content-center m-auto">
+                      <span class="text-bold text-purple">Age classification :</span><span>{{$anime->age_class}}</span>
+                    </div>
+                    <div class="w-75 d-flex justify-content-between align-content-center m-auto">
+                      <span class="text-bold text-purple">Studio :</span><span>{{$anime->studio ? ($anime->studio) : ("?")}}</span>
                     </div>
                   </div>
                   <div class="row justify-content-center mb-3 align-content-center">
