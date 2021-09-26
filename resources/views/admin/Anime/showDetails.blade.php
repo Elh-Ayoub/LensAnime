@@ -92,7 +92,7 @@
                     </div>
                   </div>
                   <div class="row justify-content-center mb-3 align-content-center">
-                    @foreach(explode(" ", $anime->categories) as $cat)
+                    @foreach(explode(", ", $anime->categories) as $cat)
                       <div class="category">
                         {{$cat}}
                       </div>

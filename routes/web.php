@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\VerifyEmailController;
 use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\AdminAnimeController;
 use App\Http\Controllers\admin\AdminEpisodeController;
+use App\Http\Controllers\admin\AdminCategoryController;
 use App\Models\User;
 use App\Models\Anime;
 use App\Models\Episode;
@@ -107,4 +108,15 @@ Route::get('/email/verify/already-success', function(){
     Route::get('/animes/episode/{id}', [AdminEpisodeController::class, 'show'])->name('episode.details');
     Route::patch('/animes/episode/{id}', [AdminEpisodeController::class, 'update'])->name('episode.update');
     Route::delete('/animes/episode/{id}', [AdminEpisodeController::class, 'destroy'])->name('episode.delete');
+});
+ //////////////////// ----------Categories module----------  ////////////////////
+ Route::group([
+    'middleware' => 'AuthCheck',
+    'prefix' => 'admin',
+], function () {
+    Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.list');
+    Route::post('/categories/create', [AdminCategoryController::class, 'store'])->name('categories.create');
+    Route::patch('categories/update/{id}', [AdminCategoryController::class, 'update'])->name('categories.update');
+    Route::delete('categories/delete/{id}', [AdminCategoryController::class, 'destroy'])->name('categories.delete');
+
 });

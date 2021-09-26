@@ -51,13 +51,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link">
-                    <i class="fa fa-play-circle"></i>
-                    <p>Manage episodes</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{route('categories.list')}}" class="nav-link">
                     <i class="fas fa fa-list-alt"></i>
                     <p>Manage Categories</p>
                 </a>
