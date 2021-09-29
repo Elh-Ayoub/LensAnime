@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css')}}">
   <link rel="stylesheet" href="{{ asset('css/chip.css')}}">
   <style>.category{background: #2d3748;width: fit-content;padding: 7px 15px;text-align: center;border-radius: 15px;color: white;margin: 5px;}
-  .bar { width:0%; height: 100px; } .percent {position:absolute; display:inline-block; left:50%; color: #040608; background: none;}</style>
+  .link-dark{color: #3A3B3B;} .link-dark:hover{color: darkgray;}</style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -66,12 +66,14 @@
                   <div class="col-lg-3 col-6 d-flex align-items-stretch flex-column">
                     <div class="small-box categories flex-fill" id="{{str_replace(' ', '-', $category->title)}}">
                       <div class="inner">
+                        <a href="{{route('category.animes', $category->id)}}" class="link-dark">
                           <h3 class="title">{{$category->title}}</h3>
                           @if($category->description)
                             <p>{{$category->description}}</p>
                           @else
                             <p>No description</p>
                           @endif
+                        </a>
                       </div>
                       <div class="icon">
                           <i class="fab fa-{{strtolower($category->title)}}"></i>

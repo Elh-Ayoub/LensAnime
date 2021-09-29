@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\api\AnimeController;
 use App\Models\Anime;
+use App\Models\Comment;
 use App\Models\Episode;
 
 class AdminAnimeController extends Controller
@@ -18,7 +19,7 @@ class AdminAnimeController extends Controller
     public function index()
     {
         $animecontroller = new AnimeController;
-        return view('admin.Anime.list', ['animes' => $animecontroller->index()]);
+        return view('admin.Anime.list', ['animes' => $animecontroller->index(), 'title' => null]);
     }
 
     /**
@@ -64,7 +65,9 @@ class AdminAnimeController extends Controller
             //get anime's episodes
             $episodes = Episode::where('anime_id', $response['success']->id)->get();
             $episodes = $episodes->sortBy('number');
-            return view('admin.Anime.showDetails', ['anime' => $response['success'], 'episodes' => $episodes]);
+            //get anime's comments
+            $comments = Comment::where('anime_id', $response['success']->id)->get();
+            return view('admin.Anime.showDetails', ['anime' => $response['success'], 'episodes' => $episodes, 'comments' => $comments]);
         }elseif(array_key_exists('fail', $response)){
             return back()->with('fail', $response['fail']);
         }

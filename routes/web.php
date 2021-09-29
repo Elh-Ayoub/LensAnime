@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\AdminUserController;
 use App\Http\Controllers\admin\AdminAnimeController;
 use App\Http\Controllers\admin\AdminEpisodeController;
 use App\Http\Controllers\admin\AdminCategoryController;
+use App\Http\Controllers\admin\AdminCommentController;
 use App\Models\User;
 use App\Models\Anime;
 use App\Models\Episode;
@@ -118,5 +119,12 @@ Route::get('/email/verify/already-success', function(){
     Route::post('/categories/create', [AdminCategoryController::class, 'store'])->name('categories.create');
     Route::patch('categories/update/{id}', [AdminCategoryController::class, 'update'])->name('categories.update');
     Route::delete('categories/delete/{id}', [AdminCategoryController::class, 'destroy'])->name('categories.delete');
-
+    Route::get('/categories/{id}/animes', [AdminCategoryController::class, 'getAnimes'])->name('category.animes');
+});
+ //////////////////// ----------Comments module----------  ////////////////////
+ Route::group([
+    'middleware' => 'AuthCheck',
+    'prefix' => 'admin',
+], function () {
+    Route::post('animes/{id}/comments', [AdminCommentController::class, 'store4anime'])->name('anime.comments.create');
 });

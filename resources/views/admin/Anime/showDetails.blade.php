@@ -14,7 +14,8 @@
   <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css')}}">
   <link rel="stylesheet" href="{{ asset('css/chip.css')}}">
   <style>.category{background: #2d3748;width: fit-content;padding: 7px 15px;text-align: center;border-radius: 15px;color: white;margin: 5px;}
-  .bar { width:0%; height: 100px; } .percent {position:absolute; display:inline-block; left:50%; color: #040608; background: none;}</style>
+  .bar { width:0%; height: 100px; } .percent {position:absolute; display:inline-block; left:50%; color: #040608; background: none;}
+  .like-btn{background: none;border: none;}.like-btn:focus {outline: none;}</style>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -114,7 +115,7 @@
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link active" href="#episodes" data-toggle="tab">Episodes</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#comments" data-toggle="tab">Comments(0)</a></li>            
+                  <li class="nav-item"><a class="nav-link" href="#comments" data-toggle="tab">Comments({{count($comments)}})</a></li>            
                 </ul>
               </div>
             </div>
@@ -135,7 +136,46 @@
                   </div>
                 </div>
                 <div class="tab-pane" id="comments">
-                  <div>Comments coming soon!</div>
+                <div class="form-group">
+                  <form action="{{route('anime.comments.create', $anime->id)}}" method="POST" class="d-flex align-content-center">
+                    @csrf
+                    <input type="text" id="content" name="content" class="form-control" maxlength="40" placeholder="type a comment...">
+                    <button class="btn btn-default"><i class="fas fa-arrow-right"></i></button>
+                  </form>
+                </div>
+                  @foreach($comments as $comment)
+                  <div class="card card-body">
+                    <div>
+                      <img class="img-circle img-sm img-bordered-sm" src="{{\App\Models\User::find($comment->author)->profile_photo}}" alt="user image">  
+                      <a class="ml-1">{{\App\Models\User::find($comment->author)->login}}</a>
+                      <span class="text-muted text-sm text-right">{{$comment->created_at}}</span>
+                      @if($comment->status == "active")
+                        <span class="float-right btn-tool text-success">{{$comment->status}}</span>
+                      @else
+                        <span class="float-right btn-tool text-danger">{{$comment->status}}</span>
+                      @endif
+                    </div>
+                    <div class="mt-1 ml-2">
+                      <span>{{$comment->content}}</span>
+                    </div>
+                    <div class="input-group">
+                      <form action="" method="POST">
+                        @csrf
+                        <button type="submit" class="link-black text-sm like-btn"><i class="far fa-thumbs-up mr-1"></i> Like(0)</button>
+                      </form>
+                      <form action="" method="POST">
+                        @csrf
+                        <button type="submit" class="link-black text-sm ml-2 like-btn"><i class="far fa-thumbs-up mr-1"></i> Dislike(0)</button>
+                      </form>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <a class="link-black mr-3" href="" data-toggle="modal" data-target="#modal-edit-{{$comment->id}}">Edit</a>
+                        <a class="link-black mr-3" href="" data-toggle="modal" data-target="#modal-deleteComment-{{$comment->id}}">Remove</a>
+                        <a class="link-black" data-toggle="collapse" href="#replies-{{$comment->id}}" role="button" aria-expanded="false" aria-controls="replies-{{$comment->id}}">reply({{count(\App\Models\Comment::where('comment_id', $comment->id)->get())}})</a>
+                        <br>
+                    </div>
+                  </div>
+                  @endforeach
                 </div>
               </div>
             </div>

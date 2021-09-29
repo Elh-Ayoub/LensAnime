@@ -65,6 +65,24 @@ class AdminCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
+    public function getAnimes($id){
+        $categoriescontroller = new CategoryController;
+        $response = $categoriescontroller->getAnimes($id);
+        if(array_key_exists('success', $response)){
+            return view('admin.Anime.list', ['animes' => $response['success'], 'title' => Category::find($id)->title]);
+        }elseif(array_key_exists('fail', $response)){
+            return back()->with('fail', $response['fail']);
+        }else{
+            return back()->with('fail-arr', $response);
+        }
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         $categoriescontroller = new CategoryController;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Anime;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,7 @@ class CategoryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|unique:categories|between:1,100',
+            'description' => 'max:500',
         ]);
         if($validator->fails()){
             return ($validator->errors()->toArray());
@@ -57,7 +59,13 @@ class CategoryController extends Controller
             return ['fail' => 'Noting found!'];
         }
     }
-    public function getAnimesByCategory($id){
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     */
+
+    public function getAnimes($id){
         $animes = Anime::all();
         $category = Category::find($id);
         if($category){
@@ -67,7 +75,7 @@ class CategoryController extends Controller
                     array_push($res, $anime);
                 }
             }
-            return $res;
+            return ['success' => $res];
         }else{
             return ['fail' => 'Category requested not found!'];
         }
@@ -84,10 +92,10 @@ class CategoryController extends Controller
         if($category){
             $validator = Validator::make($request->all(), [
                 'title' => 'string|between:1,100',
-                'description' => 'string|between:1,100',
+                'description' => 'max:500',
             ]);
             if($validator->fails()){
-                return json_decode($validator->errors()->toJson());
+                return ($validator->errors()->toArray());
             }
             if($category->title != $request->title && Category::where('title', $request->title)->first()){
                 return ['fail' => 'This category title has already been taken.'];
