@@ -56,18 +56,6 @@
                     <p>Manage Categories</p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="" class="nav-link">
-                    <i class="far fa-comment"></i>
-                    <p>Manage Comments</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="" class="nav-link">
-                    <i class="fas fa-thumbs-up"></i>
-                    <p>Manage Likes</p>
-                </a>
-            </li>
             </ul>
         </nav>
       <!-- /.sidebar-menu -->

@@ -9,26 +9,6 @@ use App\Http\Controllers\api\CommentController;
 class AdminCommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -50,6 +30,18 @@ class AdminCommentController extends Controller
     {
         $commentController = new CommentController;
         $response = $commentController->store4episode($request, $id);
+        if(array_key_exists('success', $response)){
+            return back()->with('success', $response['success']);
+        }elseif(array_key_exists('fail', $response)){
+            return back()->with('fail', $response['fail']);
+        }else{
+            return back()->with('fail-arr', $response);
+        }
+    }
+    public function store4comment(Request $request, $id)
+    {
+        $commentController = new CommentController;
+        $response = $commentController->store4comment($request, $id);
         if(array_key_exists('success', $response)){
             return back()->with('success', $response['success']);
         }elseif(array_key_exists('fail', $response)){

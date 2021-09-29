@@ -66,6 +66,25 @@ class CommentController extends Controller
             return ['fail' => 'Somrthing went wrong! Try again please.'];
         }
     }
+    public function store4comment(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'content' => 'required|string|between:1,500',
+        ]);
+        if($validator->fails()){
+            return ($validator->errors()->toArray());
+        }
+        $reply = Comment::create([
+            'author' => Auth::id(),
+            'content' => $request->content,
+            'comment_id' => $id,
+        ]);
+        if($reply){
+            return ['success' => 'Replied to comment successfully!'];
+        }else{
+            return ['fail' => 'Somrthing went wrong! Try again please.'];
+        }
+    }
     /**
      * Update the specified resource in storage.
      *

@@ -120,7 +120,7 @@
                             <!-- small box -->
                             <div class="small-box bg-primary">
                                 <div class="inner">
-                                    <h3>0</h3>
+                                    <h3>{{$categories}}</h3>
                                     <p>Categories</p>
                                 </div>
                                 <div class="icon">
@@ -133,7 +133,7 @@
                             <!-- small box -->
                             <div class="small-box bg-secondary">
                                 <div class="inner">
-                                    <h3>0</h3>
+                                    <h3>{{$comments}}</h3>
                                     <p>Comments</p>
                                 </div>
                                 <div class="icon">
@@ -146,7 +146,7 @@
                             <!-- small box -->
                             <div class="small-box bg-info">
                                 <div class="inner">
-                                    <h3>0</h3>
+                                    <h3>{{$likes}}</h3>
                                     <p>Like/Dislike</p>
                                 </div>
                                 <div class="icon">

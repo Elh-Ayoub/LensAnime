@@ -100,8 +100,14 @@
                     @endforeach
                   </div>
                   <div class="mb-3 d-flex w-100 justify-content-around align-content-center">
-                    <a href="#"><i class="far fa-thumbs-up"></i>Like</a>
-                    <a href="#"><i class="far fa-thumbs-down"></i>Dislike</a>
+                    <form action="{{route('anime.like.create', [$anime->id, 'type' => 'like'])}}" method="POST">
+                      @csrf
+                      <button type="submit" class="like-btn"><i class="@if(\App\Models\Like::where(['anime_id' => $anime->id, 'type' => 'like', 'author' => Auth::id()])->first())fas fa-thumbs-up @else far fa-thumbs-up @endif mr-1"></i>Like({{count(\App\Models\Like::where(['anime_id' => $anime->id, 'type' => 'like'])->get())}})</button>
+                    </form>
+                    <form action="{{route('anime.like.create', [$anime->id, 'type' => 'dislike'])}}" method="POST">
+                      @csrf
+                      <button type="submit" class="like-btn"><i class="@if(\App\Models\Like::where(['anime_id' => $anime->id, 'type' => 'dislike', 'author' => Auth::id()])->first())fas fa-thumbs-up @else far fa-thumbs-up @endif mr-1"></i>Dislike({{count(\App\Models\Like::where(['anime_id' => $anime->id, 'type' => 'dislike'])->get())}})</button>
+                    </form>
                   </div>
                   <div class="row justify-content-center w-auto pb-3">
                     <div class="mr-2">Created by:</div>
@@ -147,7 +153,7 @@
                   <div class="card card-body">
                     <div>
                       <img class="img-circle img-sm img-bordered-sm" src="{{\App\Models\User::find($comment->author)->profile_photo}}" alt="user image">  
-                      <a class="ml-1">{{\App\Models\User::find($comment->author)->login}}</a>
+                      <a class="ml-1">{{\App\Models\User::find($comment->author)->username}}</a>
                       <span class="text-muted text-sm text-right">{{$comment->created_at}}</span>
                         <span class="float-right btn-tool  @if($comment->status === 'active') text-success @else text-danger @endif">{{$comment->status}}</span>
                     </div>
@@ -155,13 +161,13 @@
                       <span>{{$comment->content}}</span>
                     </div>
                     <div class="input-group">
-                      <form action="" method="POST">
-                        @csrf
-                        <button type="submit" class="link-black text-sm like-btn"><i class="far fa-thumbs-up mr-1"></i> Like(0)</button>
+                    <form action="{{route('comment.like.create', [$comment->id, 'type' => 'like'])}}" method="POST">
+                      @csrf
+                        <button type="submit" class="like-btn"><i class="@if(\App\Models\Like::where(['comment_id' => $comment->id, 'type' => 'like', 'author' => Auth::id()])->first())fas fa-thumbs-up @else far fa-thumbs-up @endif mr-1"></i>Like({{count(\App\Models\Like::where(['comment_id' => $comment->id, 'type' => 'like'])->get())}})</button>
                       </form>
-                      <form action="" method="POST">
-                        @csrf
-                        <button type="submit" class="link-black text-sm ml-2 like-btn"><i class="far fa-thumbs-up mr-1"></i> Dislike(0)</button>
+                      <form action="{{route('comment.like.create', [$comment->id, 'type' => 'dislike'])}}" method="POST">
+                      @csrf
+                        <button type="submit" class="like-btn"><i class="@if(\App\Models\Like::where(['comment_id' => $comment->id, 'type' => 'dislike', 'author' => Auth::id()])->first())fas fa-thumbs-up @else far fa-thumbs-up @endif mr-1"></i>Dislike({{count(\App\Models\Like::where(['comment_id' => $comment->id, 'type' => 'dislike'])->get())}})</button>
                       </form>
                     </div>
                     <div class="d-flex justify-content-end">
@@ -170,6 +176,7 @@
                         <a class="link-black" data-toggle="collapse" href="#replies-{{$comment->id}}" role="button" aria-expanded="false" aria-controls="replies-{{$comment->id}}">reply({{count(\App\Models\Comment::where('comment_id', $comment->id)->get())}})</a>
                         <br>
                     </div>
+                    @include('admin.layout.replies' ,['comment' => $comment])
                   </div>
                   <div class="modal fade" id="modal-deleteComment-{{$comment->id}}">
                     <div class="modal-dialog">
@@ -198,7 +205,7 @@
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h4 class="modal-title">Update Comment status</h4>
+                          <h4 class="modal-title">Update Comment</h4>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                           </button>

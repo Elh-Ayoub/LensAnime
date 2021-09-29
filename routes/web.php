@@ -8,9 +8,13 @@ use App\Http\Controllers\admin\AdminAnimeController;
 use App\Http\Controllers\admin\AdminEpisodeController;
 use App\Http\Controllers\admin\AdminCategoryController;
 use App\Http\Controllers\admin\AdminCommentController;
+use App\Http\Controllers\admin\AdminLikeController;
 use App\Models\User;
 use App\Models\Anime;
+use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Episode;
+use App\Models\Like;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,7 +79,11 @@ Route::get('/email/verify/already-success', function(){
         $admins = count(User::where('role', 'admin')->get());
         $animes = count(Anime::all());
         $episodes = count(Episode::all());
-        return view('Admin.home', ['users' => $users, 'admins' => $admins, 'animes' => $animes, 'episodes' => $episodes]);
+        $categories = count(Category::all());
+        $comments = count(Comment::all());
+        $categories = count(Category::all());
+        $likes = count(Like::all());
+        return view('Admin.home', ['users' => $users, 'admins' => $admins, 'animes' => $animes, 'episodes' => $episodes, 'categories' => $categories, 'comments' => $comments, 'likes' =>$likes]);
     })->name('admin.dashboard');
     Route::post('user/create', [AdminUserController::class, 'create'])->name('create.user');
     Route::patch('profile/update/{id}', [AdminUserController::class, 'UpdateAdmin'])->name('admin.update');
@@ -128,6 +136,16 @@ Route::get('/email/verify/already-success', function(){
 ], function () {
     Route::post('animes/{id}/comments', [AdminCommentController::class, 'store4anime'])->name('anime.comments.create');
     Route::post('episodes/{id}/comments', [AdminCommentController::class, 'store4episode'])->name('episode.comments.create');
+    Route::post('comments/{id}/comments', [AdminCommentController::class, 'store4comment'])->name('reply.comments.create');
     Route::patch('comments/update/{id}', [AdminCommentController::class, 'update'])->name('comments.update');
     Route::delete('comments/delete/{id}', [AdminCommentController::class, 'destroy'])->name('comments.delete');
+});
+ //////////////////// ----------Like module----------  ////////////////////
+ Route::group([
+    'middleware' => 'AuthCheck',
+    'prefix' => 'admin',
+], function () {
+    Route::post('animes/{id}/like', [AdminLikeController::class, 'store4anime'])->name('anime.like.create');
+    Route::post('episodes/{id}/like', [AdminLikeController::class, 'store4episode'])->name('episode.like.create');
+    Route::post('comments/{id}/like', [AdminLikeController::class, 'store4comment'])->name('comment.like.create');
 });

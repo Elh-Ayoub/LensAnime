@@ -68,9 +68,15 @@
                 <div class="embed-responsive embed-responsive-21by9">
                     <iframe id="episode" class="embed-responsive-item" frameborder="0" src="{{$watching_servers[0]->url}}" allowfullscreen></iframe>
                 </div>
-                <div class="mb-3 d-flex justify-content-start align-content-center">
-                    <a href="#" class="m-2"><i class="far fa-thumbs-up"></i>Like</a>
-                    <a href="#" class="m-2"><i class="far fa-thumbs-down"></i>Dislike</a>
+                <div class="mb-3 mt-3 d-flex justify-content-start align-content-center">
+                      <form action="{{route('episode.like.create', [$episode->id, 'type' => 'like'])}}" method="POST">
+                        @csrf
+                        <button type="submit" class="like-btn"><i class="@if(\App\Models\Like::where(['episode_id' => $episode->id, 'type' => 'like', 'author' => Auth::id()])->first())fas fa-thumbs-up @else far fa-thumbs-up @endif mr-1"></i>Like({{count(\App\Models\Like::where(['episode_id' => $episode->id, 'type' => 'like'])->get())}})</button>
+                      </form>
+                      <form action="{{route('episode.like.create', [$episode->id, 'type' => 'dislike'])}}" method="POST">
+                        @csrf
+                        <button type="submit" class="like-btn"><i class="@if(\App\Models\Like::where(['episode_id' => $episode->id, 'type' => 'dislike', 'author' => Auth::id()])->first())fas fa-thumbs-up @else far fa-thumbs-up @endif mr-1"></i>Dislike({{count(\App\Models\Like::where(['episode_id' => $episode->id, 'type' => 'dislike'])->get())}})</button>
+                      </form>
                 </div>
                 <div class="form-group">
                   <form action="{{route('episode.comments.create', $episode->id)}}" method="POST" class="d-flex align-content-center">
@@ -79,15 +85,15 @@
                     <button class="btn btn-default"><i class="fas fa-arrow-right"></i></button>
                   </form>
                 </div>
-                <a class="link-black text-sm" data-toggle="collapse" href="#ep-comments" role="button" aria-expanded="false" aria-controls="ep-comments">
-                    Comments({{count($comments)}})
+                <a class="link-black text-sm mb-3" data-toggle="collapse" href="#ep-comments" role="button" aria-expanded="false" aria-controls="ep-comments">
+                    <i class="far fa-comment"></i> Comments({{count($comments)}})
                 </a>
                 <div class="collapse" id="ep-comments">
                   @foreach($comments as $comment)
                   <div class="card card-body">
                     <div>
                       <img class="img-circle img-sm img-bordered-sm" src="{{\App\Models\User::find($comment->author)->profile_photo}}" alt="user image">  
-                      <a class="ml-1">{{\App\Models\User::find($comment->author)->login}}</a>
+                      <a class="ml-1">{{\App\Models\User::find($comment->author)->username}}</a>
                       <span class="text-muted text-sm text-right">{{$comment->created_at}}</span>
                         <span class="float-right btn-tool  @if($comment->status === 'active') text-success @else text-danger @endif">{{$comment->status}}</span>
                     </div>
@@ -95,13 +101,13 @@
                       <span>{{$comment->content}}</span>
                     </div>
                     <div class="input-group">
-                      <form action="" method="POST">
-                        @csrf
-                        <button type="submit" class="link-black text-sm like-btn"><i class="far fa-thumbs-up mr-1"></i> Like(0)</button>
+                      <form action="{{route('comment.like.create', [$comment->id, 'type' => 'like'])}}" method="POST">
+                      @csrf
+                        <button type="submit" class="like-btn"><i class="@if(\App\Models\Like::where(['comment_id' => $comment->id, 'type' => 'like', 'author' => Auth::id()])->first())fas fa-thumbs-up @else far fa-thumbs-up @endif mr-1"></i>Like({{count(\App\Models\Like::where(['comment_id' => $comment->id, 'type' => 'like'])->get())}})</button>
                       </form>
-                      <form action="" method="POST">
-                        @csrf
-                        <button type="submit" class="link-black text-sm ml-2 like-btn"><i class="far fa-thumbs-up mr-1"></i> Dislike(0)</button>
+                      <form action="{{route('comment.like.create', [$comment->id, 'type' => 'dislike'])}}" method="POST">
+                      @csrf
+                        <button type="submit" class="like-btn"><i class="@if(\App\Models\Like::where(['comment_id' => $comment->id, 'type' => 'dislike', 'author' => Auth::id()])->first())fas fa-thumbs-up @else far fa-thumbs-up @endif mr-1"></i>Dislike({{count(\App\Models\Like::where(['comment_id' => $comment->id, 'type' => 'dislike'])->get())}})</button>
                       </form>
                     </div>
                     <div class="d-flex justify-content-end">
@@ -110,6 +116,7 @@
                         <a class="link-black" data-toggle="collapse" href="#replies-{{$comment->id}}" role="button" aria-expanded="false" aria-controls="replies-{{$comment->id}}">reply({{count(\App\Models\Comment::where('comment_id', $comment->id)->get())}})</a>
                         <br>
                     </div>
+                    @include('admin.layout.replies' ,['comment' => $comment])
                   </div>
                   <div class="modal fade" id="modal-deleteComment-{{$comment->id}}">
                     <div class="modal-dialog">
