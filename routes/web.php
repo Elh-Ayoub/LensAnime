@@ -127,4 +127,6 @@ Route::get('/email/verify/already-success', function(){
     'prefix' => 'admin',
 ], function () {
     Route::post('animes/{id}/comments', [AdminCommentController::class, 'store4anime'])->name('anime.comments.create');
+    Route::patch('comments/update/{id}', [AdminCommentController::class, 'update'])->name('comments.update');
+    Route::delete('comments/delete/{id}', [AdminCommentController::class, 'destroy'])->name('comments.delete');
 });

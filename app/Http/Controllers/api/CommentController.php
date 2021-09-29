@@ -22,16 +22,6 @@ class CommentController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -57,49 +47,38 @@ class CommentController extends Controller
             return ['fail' => 'Somrthing went wrong! Try again please.'];
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return array response
      */
     public function update(Request $request, $id)
     {
-        //
+        $comment = Comment::find($id);
+        if($comment){
+            if($comment->author === Auth::id() && !$request->content){
+                $comment->delete();
+            }
+            $comment->update($request->all());
+            return ['success' => 'Comment status updated successfully!']; 
+        }
+        return ['fail'=> 'Nothing updated!'];
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        if(Comment::find($id)){
+            Comment::destroy($id);
+            return ['success' => 'Comment deleted successfully!'];
+        }else{
+            return ['fail' => 'Comment requested not found!'];
+        }
     }
 }

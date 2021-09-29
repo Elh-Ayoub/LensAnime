@@ -46,29 +46,6 @@ class AdminCommentController extends Controller
             return back()->with('fail-arr', $response);
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      *
@@ -78,7 +55,13 @@ class AdminCommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $commentController = new CommentController;
+        $response = $commentController->update($request, $id);
+        if(array_key_exists('success', $response)){
+            return back()->with('success', $response['success']);
+        }elseif(array_key_exists('fail', $response)){
+            return back()->with('fail', $response['fail']);
+        }
     }
 
     /**
@@ -89,6 +72,12 @@ class AdminCommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $commentController = new CommentController;
+        $response = $commentController->destroy($id);
+        if(array_key_exists('success', $response)){
+            return back()->with('success', $response['success']);
+        }elseif(array_key_exists('fail', $response)){
+            return back()->with('fail', $response['fail']);
+        }
     }
 }

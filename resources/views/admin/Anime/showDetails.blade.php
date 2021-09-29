@@ -149,13 +149,9 @@
                       <img class="img-circle img-sm img-bordered-sm" src="{{\App\Models\User::find($comment->author)->profile_photo}}" alt="user image">  
                       <a class="ml-1">{{\App\Models\User::find($comment->author)->login}}</a>
                       <span class="text-muted text-sm text-right">{{$comment->created_at}}</span>
-                      @if($comment->status == "active")
-                        <span class="float-right btn-tool text-success">{{$comment->status}}</span>
-                      @else
-                        <span class="float-right btn-tool text-danger">{{$comment->status}}</span>
-                      @endif
+                        <span class="float-right btn-tool  @if($comment->status === 'active') text-success @else text-danger @endif">{{$comment->status}}</span>
                     </div>
-                    <div class="mt-1 ml-2">
+                    <div class="mt-2 ml-2">
                       <span>{{$comment->content}}</span>
                     </div>
                     <div class="input-group">
@@ -173,6 +169,63 @@
                         <a class="link-black mr-3" href="" data-toggle="modal" data-target="#modal-deleteComment-{{$comment->id}}">Remove</a>
                         <a class="link-black" data-toggle="collapse" href="#replies-{{$comment->id}}" role="button" aria-expanded="false" aria-controls="replies-{{$comment->id}}">reply({{count(\App\Models\Comment::where('comment_id', $comment->id)->get())}})</a>
                         <br>
+                    </div>
+                  </div>
+                  <div class="modal fade" id="modal-deleteComment-{{$comment->id}}">
+                    <div class="modal-dialog">
+                      <div class="modal-content bg-danger">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Confirmation</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <p>You are about to delete a comment. Are you sure? </p>
+                        </div>
+                        <form action="{{route('comments.delete', $comment->id)}}" method="POST">
+                          @csrf
+                          @method('DELETE')
+                          <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-outline-light">Delete</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal fade" id="modal-edit-{{$comment->id}}">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h4 class="modal-title">Update Comment status</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <form action="{{route('comments.update', $comment->id)}}" method="POST">
+                          @csrf
+                          @method('PATCH')
+                          <div class="modal-body">
+                              <div class="form-group">
+                                  <label for="status">Comment's status</label>
+                                  <select id="status" name="status" class="form-control custom-select">
+                                      <option selected disabled>{{$comment->status}}</option>
+                                      <option>active</option>
+                                      <option>inactive</option>
+                                  </select>
+                                  @if($comment->author === Auth::id())
+                                  <label for="status" class="mt-2">Content</label>
+                                  <input type="text" id="content" name="content" class="form-control" maxlength="40" placeholder="type a comment..." value="{{$comment->content}}">
+                                  @endif
+                              </div>
+                          </div>
+                          <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary">Update</button>
+                          </div>
+                        </form>
+                      </div>
                     </div>
                   </div>
                   @endforeach

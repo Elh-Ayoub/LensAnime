@@ -67,6 +67,7 @@ class AdminAnimeController extends Controller
             $episodes = $episodes->sortBy('number');
             //get anime's comments
             $comments = Comment::where('anime_id', $response['success']->id)->get();
+            $comments = $comments->sortByDesc('created_at');
             return view('admin.Anime.showDetails', ['anime' => $response['success'], 'episodes' => $episodes, 'comments' => $comments]);
         }elseif(array_key_exists('fail', $response)){
             return back()->with('fail', $response['fail']);
