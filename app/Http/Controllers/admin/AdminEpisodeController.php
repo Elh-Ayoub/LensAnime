@@ -8,6 +8,7 @@ use App\Http\Controllers\api\EpisodeController;
 use App\Models\Episode;
 use App\Models\Anime;
 use App\Models\Servers;
+use App\Models\Comment;
 
 class AdminEpisodeController extends Controller
 {
@@ -59,6 +60,7 @@ class AdminEpisodeController extends Controller
                 'watching_servers' => Servers::where(['episode_id' => $id, 'purpose' => 'watch'])->get(),
                 'download_servers' => Servers::where(['episode_id' => $id, 'purpose' => 'download'])->get(),
                 'anime' => Anime::find($response['success']->anime_id),
+                'comments' => Comment::where('episode_id', $id)->get(),
             ]);
         }elseif(array_key_exists('fail', $response)){
             return back()->with('fail', $response['fail']);

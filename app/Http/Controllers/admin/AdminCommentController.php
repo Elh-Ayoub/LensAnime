@@ -46,6 +46,18 @@ class AdminCommentController extends Controller
             return back()->with('fail-arr', $response);
         }
     }
+    public function store4episode(Request $request, $id)
+    {
+        $commentController = new CommentController;
+        $response = $commentController->store4episode($request, $id);
+        if(array_key_exists('success', $response)){
+            return back()->with('success', $response['success']);
+        }elseif(array_key_exists('fail', $response)){
+            return back()->with('fail', $response['fail']);
+        }else{
+            return back()->with('fail-arr', $response);
+        }
+    }
     /**
      * Update the specified resource in storage.
      *
