@@ -87,9 +87,9 @@ Route::get('/email/verify/already-success', function(){
     })->name('admin.dashboard');
     Route::post('user/create', [AdminUserController::class, 'create'])->name('create.user');
     Route::patch('profile/update/{id}', [AdminUserController::class, 'UpdateAdmin'])->name('admin.update');
-    Route::patch('password/update/', [AdminUserController::class, 'UpdateAdminPassword'])->name('admin.password');
+    Route::patch('users/{id}/password/update/', [AdminUserController::class, 'UpdatePassword'])->name('admin.password');
     Route::patch('avatar/update', [AdminUserController::class, 'UpdateAvatar'])->name('admin.update.avatar');
-    Route::delete('avatar/delete', [AdminUserController::class, 'setDefaultAvatar'])->name('admin.delete.avatar');
+    Route::delete('users/{id}/avatar/delete', [AdminUserController::class, 'setDefaultAvatar'])->name('admin.delete.avatar');
     Route::get('/users', function(){return view('Admin.Users.list', ['users' => User::all()]);})->name('users.list');
     Route::patch('users/update/{id}',[AdminUserController::class, 'UpdateAdmin'])->name('users.update');
     Route::delete('users/delete/{id}',[AdminUserController::class, 'destroy'])->name('users.delete');

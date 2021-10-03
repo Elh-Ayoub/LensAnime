@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -85,7 +86,7 @@ class UserController extends Controller
         $user->update(array_merge($request->all(), ['profile_photo' => $profile_photo]));
         return ['success' => 'Account Updated successfully!'];
     }
-    public function updateAvatar(Request $request){
+    public function updateAvatar(Request $request, $id = null){
         $validator = Validator::make($request->all(), [
             'image' => 'required|mimes:jpg,png|max:20000',
         ]);
@@ -98,6 +99,9 @@ class UserController extends Controller
         if($request->user){
             $user = $this->show($request->user);
         }
+        if($id){
+            $user = User::find($id);
+        }
         $image = $request->file('image');
         if($image){
             $fileName = str_replace(' ', '-', $user->username) . '.png';
@@ -109,6 +113,14 @@ class UserController extends Controller
         }
         return response()->json('error', 404);
     }
+    public function setDefaultAvatar($id){
+        $user = User::find($id);
+        $name = substr($user->username, 0, 2);
+        File::delete(public_path(parse_url($user->profile_photo, PHP_URL_PATH)));
+        $profile_photo = 'https://ui-avatars.com//api//?name='.$name.'&color=7F9CF5&background=EBF4FF';
+        $user->update(['profile_photo' => $profile_photo]);
+        return ['success' => 'Profile picture deleted!'];
+    }
     function uploadImage($request){
         $image = $request->file('profile_photo');
         if($image){
@@ -116,6 +128,22 @@ class UserController extends Controller
             $image = $request->file('profile_photo')->store('public');
             $image1 = $request->file('profile_photo')->move(public_path('/profile-pictures'), $filename);
             return url('/profile-pictures/' . $filename);
+        }
+    }
+    public function UpdatePassword(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required|string|min:8',
+            'password' => 'required|string|confirmed|min:8',
+        ]);
+        $user = User::find($id);
+        if($validator->fails()){
+            return ($validator->errors()->toArray());
+        }
+        if(Hash::check($request->current_password, $user->password)){
+            $user->update(['password' => bcrypt($request->password)]);
+            return ['success' => 'Password Updtaed!'];
+        }else{
+            return ['fail' => 'Incorrect password!'];
         }
     }
     public function destroy($id)

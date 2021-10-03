@@ -15,14 +15,14 @@ use Str;
 
 class AuthController extends Controller
 {
-    public function login(Request $request, $requiredRole = 'user'){
+    public function login(Request $request, $requiredRole = null){
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            if(Auth::user()->role == $requiredRole){
+            if(Auth::user()->role == $requiredRole || !$requiredRole){
                 return ['success' => Auth::user()];
             }else{
                 Auth::logout();

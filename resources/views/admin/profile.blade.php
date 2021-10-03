@@ -37,23 +37,23 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
-    @if(Session::get('success'))
-        <div class="alert alert-success col-sm-3 ml-2 text-center" role="alert">
-            {{Session::get('success')}}
-        </div>
-        @endif
-        @if(Session::get('fail'))
+      @if(Session::get('success'))
+      <div class="alert alert-success col-sm-3 ml-2 text-center" role="alert">
+          {{Session::get('success')}}
+      </div>
+      @endif
+      @if(Session::get('fail'))
+      <div class="alert alert-danger col-sm-3 ml-1" role="alert">
+          {{Session::get('fail')}}
+          </div>
+      @endif
+      @if(Session::get('fail-arr'))
         <div class="alert alert-danger col-sm-3 ml-1" role="alert">
-            {{Session::get('fail')}}
-            </div>
-        @endif
-            @if(Session::get('fail-arr'))
-            <div class="alert alert-danger col-sm-3 ml-1" role="alert">
-                @foreach(Session::get('fail-arr') as $key => $err)
-                <p>{{$key . ': ' . $err[0]}}</p>
-                @endforeach
-            </div>
-    @endif
+          @foreach(Session::get('fail-arr') as $key => $err)
+          <p>{{$key . ': ' . $err[0]}}</p>
+          @endforeach
+        </div>
+      @endif
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -71,22 +71,29 @@
                 <h3 class="profile-username text-center">{{$user->username}}</h3>
                 <p class="text-muted text-center">{{$user->full_name}}</p>
                 <ul class="list-group list-group-unbordered mb-3">
-                    <li class="list-group-item">
-                        <b>Role</b> <a class="float-right">{{$user->role}}</a>
-                    </li>
-                    <li class="list-group-item">
-                        <b>Rating</b> <a class="float-right">{{$user->rating}}</a>
-                    </li>
-                    <form action="{{route('admin.update.avatar')}}" method="POST" class="form-group row" enctype="multipart/form-data">
-                        @csrf
-                        @method('PATCH')
-                        <div class="d-flex w-100 justify-content-between mt-2 ml-1 mr-2">
-                            <label class="">Profile picture</label>
-                            <label class="selectfile btn btn-primary" for="choosefile">Edit picture</label>
-                            <input id="choosefile" type="file" name="image" class="d-none"> 
-                        </div>
-                        <button class="btn btn-warning">save</button>
-                    </form> 
+                  <li class="list-group-item">
+                      <b>Role</b> <a class="float-right">{{$user->role}}</a>
+                  </li>
+                  <li class="list-group-item">
+                      <b>Rating</b> <a class="float-right">{{$user->rating}}</a>
+                  </li>
+                  <form action="{{route('admin.update.avatar')}}" method="POST" class="form-group row" enctype="multipart/form-data">
+                      @csrf
+                      @method('PATCH')
+                      <div class="d-flex w-100 justify-content-between mt-2 ml-1 mr-2">
+                          <label class="">Profile picture</label>
+                          <label class="selectfile btn btn-primary" for="choosefile">Edit picture</label>
+                          <input id="choosefile" type="file" name="image" class="d-none"> 
+                      </div>
+                      <button class="btn btn-warning">save</button>
+                  </form> 
+                  <form action="{{route('admin.delete.avatar', $user->id)}}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <div class="d-flex w-100 justify-content-start">
+                        <button type="submit" class="btn btn-danger">Delete avatar</button>
+                    </div> 
+                  </form> 
                 </ul>
               </div>
               <!-- /.card-body -->
@@ -99,7 +106,7 @@
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
                     <li class="nav-item"><a class="nav-link active" href="#settings" data-toggle="tab">Info</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#activity" data-toggle="tab">Activity</a></li>            
+                    <li class="nav-item"><a class="nav-link" href="#password" data-toggle="tab">password</a></li>            
                 </ul>
               </div><!-- /.card-header -->
               <div class="card-body">
@@ -143,6 +150,33 @@
                             </div>
                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-user">Delete</button>
                         </div>           
+                    </div>
+                    <div class="tab-pane" id="password">
+                      <form action="{{route('admin.password', $user->id)}}" method="POST" enctype="multipart/form-data">
+                          @csrf
+                          @method('PATCH')
+                          <div class="form-group row">
+                              <label for="inputCurrPass" class="col-sm-3 col-form-label">Current password</label>
+                              <div class="col-sm-9">
+                                  <input type="password" class="form-control" name="current_password" id="inputCurrPass">
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="inputPass" class="col-sm-3 col-form-label">New password</label>
+                              <div class="col-sm-9">
+                                  <input type="password" class="form-control" name="password" id="inputPass">
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="inputConfirmPass" class="col-sm-3 col-form-label">Confirm new password</label>
+                              <div class="col-sm-9">
+                                  <input type="password" class="form-control" name="password_confirmation" id="inputConfirmPass">
+                              </div>
+                          </div>
+                          <div class="form-group d-flex justify-content-start">
+                              <button type="submit" class="btn btn-warning mt-3">Save</button>
+                          </div> 
+                      </form>
                     </div>
                   <!-- /.tab-pane -->
                 </div>

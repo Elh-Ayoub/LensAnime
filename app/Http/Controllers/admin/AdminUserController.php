@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\api\UserController;
+use Illuminate\Support\Facades\Redis;
 
 class AdminUserController extends Controller
 {
@@ -22,6 +23,26 @@ class AdminUserController extends Controller
         $res = $usercontroller->updateAvatar($request);
         if(array_key_exists('success', $res)){
             return back()->with('success', $res['success']);
+        }else{
+            return back()->with('fail-arr', $res);
+        }
+    }
+    public function setDefaultAvatar($id){
+        $usercontroller = new UserController;
+        $res = $usercontroller->setDefaultAvatar($id);
+        if(array_key_exists('success', $res)){
+            return back()->with('success', $res['success']);
+        }else{
+            return back()->with('fail-arr', $res);
+        }
+    }
+    public function UpdatePassword(Request $request, $id){
+        $usercontroller = new UserController;
+        $res = $usercontroller->UpdatePassword($request, $id);
+        if(array_key_exists('success', $res)){
+            return back()->with('success', $res['success']);
+        }elseif(array_key_exists('fail', $res)){
+            return back()->with('fail', $res['fail']);
         }else{
             return back()->with('fail-arr', $res);
         }
