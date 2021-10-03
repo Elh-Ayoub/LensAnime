@@ -44,4 +44,9 @@ use App\Models\Like;
  Route::patch('users/{id}/password/update/', [UserController::class, 'UpdatePassword'])->name('api.users.update.password');
  Route::delete('users/{id}/avatar/delete', [UserController::class, 'setDefaultAvatar'])->name('api.users.delete.avatar');
  Route::delete('users/{id}', [UserController::class, 'destroy'])->name('api.users.delete');
- 
+  //////////////////// ----------Anime module----------  ////////////////////
+  Route::get('/animes', [AnimeController::class, 'index'])->name('api.animes.list');
+  Route::post('/animes', [AnimeController::class, 'store'])->name('api.animes.create');
+  Route::get('/animes/{id}', [AnimeController::class, 'show'])->name('api.animes.id');
+  Route::patch('/animes/{id}', [AnimeController::class, 'update'])->name('api.animes.update');
+  Route::delete('/animes/{id}', [AnimeController::class, 'destroy'])->name('api.animes.delete');
