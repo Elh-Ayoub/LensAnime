@@ -113,7 +113,7 @@ Route::get('/email/verify/already-success', function(){
     'middleware' => 'AuthCheck',
     'prefix' => 'admin',
 ], function () {
-    Route::post('/animes/episode/create', [AdminEpisodeController::class, 'store'])->name('episode.create');
+    Route::post('/animes/{id}/episode/', [AdminEpisodeController::class, 'store'])->name('episode.create');
     Route::get('/animes/episode/{id}', [AdminEpisodeController::class, 'show'])->name('episode.details');
     Route::patch('/animes/episode/{id}', [AdminEpisodeController::class, 'update'])->name('episode.update');
     Route::delete('/animes/episode/{id}', [AdminEpisodeController::class, 'destroy'])->name('episode.delete');

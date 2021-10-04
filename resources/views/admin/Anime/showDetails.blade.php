@@ -275,7 +275,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="ep-form" action="{{route('episode.create', ['anime_id' => $anime->id])}}" method="POST" enctype="multipart/form-data">
+            <form id="ep-form" action="{{route('episode.create',  $anime->id)}}" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="modal-body">
                 <div class="form-group">

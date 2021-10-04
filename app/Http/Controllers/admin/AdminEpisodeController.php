@@ -28,10 +28,10 @@ class AdminEpisodeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $episodecontroller = new EpisodeController;
-        $response = $episodecontroller->store($request);
+        $response = $episodecontroller->store($request, $id);
         if(array_key_exists('success', $response)){
             return back()->with('success', $response['success']);
         }elseif(array_key_exists('fail', $response)){

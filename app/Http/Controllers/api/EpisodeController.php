@@ -22,14 +22,13 @@ class EpisodeController extends Controller
         //
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'number' => ['required'],
             'description' => ['max:500'],
             'server_name' => ['required'],
             'src' => ['required'],
-            'anime_id' => ['required'],
             'purpose' => ['required'],
         ]);
         if($validator->fails()){
@@ -42,7 +41,7 @@ class EpisodeController extends Controller
             'number' => $request->number,
             'description' => $request->description,
             'created_by' => Auth::id(),
-            'anime_id' => $request->anime_id,
+            'anime_id' => $id,
         ]);
         if($episode){
             for($i=0; $i < count($request->src); $i++){
@@ -69,8 +68,12 @@ class EpisodeController extends Controller
             return url('/episodes/' . $filename);
         }
     }
-    public function getAnimesEpisodes($anime_id){
-       return Episode::where('anime_id', $anime_id)->get();
+    public function getAnimesEpisodes($id){
+        if(Anime::find($id)){
+            return Episode::where('anime_id', $id)->get();
+        }else{
+            return ['fail' => 'Anime not found!'];
+        }
     }
     
     public function show($id)

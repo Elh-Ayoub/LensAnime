@@ -66,7 +66,7 @@
         <div class="episode-container align-items-start flex-row-reverse justify-content-start">
             <div class="w-100">
                 <div class="embed-responsive embed-responsive-21by9">
-                    <iframe id="episode" class="embed-responsive-item" frameborder="0" src="{{$watching_servers[0]->url}}" allowfullscreen></iframe>
+                    <iframe id="episode" class="embed-responsive-item" frameborder="0" src="{{(count($watching_servers) > 0) ? ($watching_servers[0]->url) : (null)}}" allowfullscreen></iframe>
                 </div>
                 <div class="mb-3 mt-3 d-flex justify-content-start align-content-center">
                       <form action="{{route('episode.like.create', [$episode->id, 'type' => 'like'])}}" method="POST">

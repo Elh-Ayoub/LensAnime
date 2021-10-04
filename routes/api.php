@@ -50,3 +50,10 @@ use App\Models\Like;
   Route::get('/animes/{id}', [AnimeController::class, 'show'])->name('api.animes.id');
   Route::patch('/animes/{id}', [AnimeController::class, 'update'])->name('api.animes.update');
   Route::delete('/animes/{id}', [AnimeController::class, 'destroy'])->name('api.animes.delete');
+
+  //////////////////// ----------Episode module----------  ////////////////////
+  Route::get('/animes/{id}/episodes', [EpisodeController::class, 'getAnimesEpisodes'])->name('api.animes.episodes');
+  Route::post('/animes/{id}/episodes', [EpisodeController::class, 'store'])->name('api.episodes.create');
+  Route::get('/animes/episodes/{id}', [EpisodeController::class, 'show'])->name('api.episodes.show');
+  Route::patch('/animes/episodes/{id}', [EpisodeController::class, 'update'])->name('api.episode.update');
+  Route::delete('/animes/episodes/{id}', [EpisodeController::class, 'destroy'])->name('api.episode.delete');
