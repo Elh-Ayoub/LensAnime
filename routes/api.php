@@ -65,3 +65,11 @@ use App\Models\Like;
   Route::patch('/categories/{id}', [CategoryController::class, 'update'])->name('api.categories.update');
   Route::get('/categories/{id}/animes', [CategoryController::class, 'getAnimes'])->name('api.categories.getAnimes');
   Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('api.categories.delete');
+
+   //////////////////// ----------Comments module----------  ////////////////////
+   Route::get('animes/{id}/comments', [CommentController::class, 'getAnimeComments'])->name('api.anime.comments');
+   Route::post('animes/{id}/comments', [CommentController::class, 'store4anime'])->name('api.comments.create');
+   Route::get('comments/{id}/comments', [CommentController::class, 'getReplies'])->name('api.comment.reply');
+   Route::post('comments/{id}/comments', [CommentController::class, 'store4comment'])->name('api.reply.create');
+   Route::patch('comments/{id}', [CommentController::class, 'update'])->name('api.comments.update');
+   Route::delete('comments/{id}', [CommentController::class, 'destroy'])->name('api.comments.delete');

@@ -21,6 +21,9 @@ class CommentController extends Controller
         return Comment::where('anime_id', $id)->get();
     }
 
+    public function getReplies($id){
+        return Comment::where('comment_id', $id)->get();
+    }
     /**
      * Store a newly created resource in storage.
      *
