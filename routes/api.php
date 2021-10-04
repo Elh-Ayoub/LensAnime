@@ -10,12 +10,6 @@ use App\Http\Controllers\Api\EpisodeController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\LikeController;
-use App\Models\User;
-use App\Models\Anime;
-use App\Models\Category;
-use App\Models\Comment;
-use App\Models\Episode;
-use App\Models\Like;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -73,3 +67,9 @@ use App\Models\Like;
    Route::post('comments/{id}/comments', [CommentController::class, 'store4comment'])->name('api.reply.create');
    Route::patch('comments/{id}', [CommentController::class, 'update'])->name('api.comments.update');
    Route::delete('comments/{id}', [CommentController::class, 'destroy'])->name('api.comments.delete');
+   
+   //////////////////// ----------Like module----------  ////////////////////
+   Route::get('animes/{id}/likes', [LikeController::class, 'getAnimeLike'])->name('api.anime.likes');
+   Route::post('animes/{id}/likes', [LikeController::class, 'createAnimeLike'])->name('api.anime.likes.create');
+   Route::post('episodes/{id}/likes', [LikeController::class, 'createEpisodeLike'])->name('api.episode.likes.create');
+   Route::post('comments/{id}/likes', [LikeController::class, 'createCommentLike'])->name('api.comment.likes.create');
