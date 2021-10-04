@@ -57,3 +57,11 @@ use App\Models\Like;
   Route::get('/animes/episodes/{id}', [EpisodeController::class, 'show'])->name('api.episodes.show');
   Route::patch('/animes/episodes/{id}', [EpisodeController::class, 'update'])->name('api.episode.update');
   Route::delete('/animes/episodes/{id}', [EpisodeController::class, 'destroy'])->name('api.episode.delete');
+
+  //////////////////// ----------Categories module----------  ////////////////////
+  Route::get('/categories', [CategoryController::class, 'index'])->name('api.categories.list');
+  Route::post('/categories', [CategoryController::class, 'store'])->name('api.categories.create');
+  Route::get('/categories/{id}', [CategoryController::class, 'show'])->name('api.categories.show');
+  Route::patch('/categories/{id}', [CategoryController::class, 'update'])->name('api.categories.update');
+  Route::get('/categories/{id}/animes', [CategoryController::class, 'getAnimes'])->name('api.categories.getAnimes');
+  Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('api.categories.delete');
