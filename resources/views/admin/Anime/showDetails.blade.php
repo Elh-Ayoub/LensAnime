@@ -60,6 +60,7 @@
         @endif
         <div>
           <button class="btn btn-primary ml-2 mb-3" data-toggle="modal" data-target="#modal-add-episode"><i class="fas fa-plus mr-2"></i>Add episode</button>
+          <button class="btn btn-info ml-2 mb-3" data-toggle="modal" data-target="#modal-add-multi-episodes"><i class="fas fa-plus mr-2"></i>Add multi episodes</button>
           <a href="{{route('animes.edit.view', $anime->id)}}" class="btn btn-warning ml-2 mb-3"><i class="fas fa-pen mr-2"></i>Update Anime info</a>
           <a type="button" class="btn btn-danger ml-2 mb-3" data-toggle="modal" data-target="#modal-delete-anime"><i class="fas fa-times mr-2"></i>delete Anime</a>
         </div>
@@ -301,6 +302,59 @@
                     </div>
                   </div>
                   <div type="button" id="add_ep_server" class="btn btn-success mt-2">Add server</div>
+                </div>
+              </div>
+              <!-- <div class="progress mt-2">
+                <div class="bar bg-blue"></div>
+                <div class="percent text-bold">0%</div>
+              </div> -->
+              <div class="modal-footer justify-content-between">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Add</button>
+              </div>
+            </form>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="modal-add-multi-episodes">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add episode</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="ep-form" action="{{route('episode.create.multi',  $anime->id)}}" method="POST" enctype="multipart/form-data">
+              @csrf
+              <div class="modal-body">
+                <div class="form-group">
+                    <label for="number">Episodes range</label>
+                    <div class="d-flex">
+                      <label for="from" class="mr-2">From</label>
+                      <input type="number" id="from" name="from" class="form-control" min="1">
+                      <label for="from" class="mr-2 ml-2">To</label>
+                      <input type="number" id="to" name="to" class="form-control" min="1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description <span class="small">(optional)</span></label>
+                    <textarea type="text" id="description" name="description" class="form-control" maxlength="500"></textarea>
+                </div>
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link" href="#byLink" data-toggle="tab">Import by Embed src links</a></li>            
+                </ul>
+                <div class="tab-content">
+                  <div class="active tab-pane multi_server_links" id="byLink">
+                    <div class="d-flex">
+                      <input type="text" id="server_name" name="server_name" class="form-control" placeholder="server name" style="width: 35%;">
+                      <textarea id="links" name="links" class="form-control" placeholder="Embed code src link"></textarea>
+                      <select id="purpose" name="purpose" class="form-control custom-select"style="width: 20%;">
+                        <option selected>watch</option>
+                        <option>download</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
               <!-- <div class="progress mt-2">

@@ -58,6 +58,41 @@ class EpisodeController extends Controller
         }
     }
 
+    public function MultiStore(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'from' => ['required'],
+            'to' => ['required'],
+            'description' => ['max:500'],
+            'server_name' => ['required'],
+            'links' => ['required'],
+            'purpose' => ['required'],
+        ]);
+        if($validator->fails()){
+            return ($validator->errors()->toArray());
+        }
+        $links = explode("\n", $request->links);
+        $from  = $request->from;
+        $to  = $request->to;
+        for($i = 0; $i < ($to - $from + 1); $i++){
+            $episode = Episode::where(['number' =>  $i + 1, 'anime_id' => $id,])->first();
+            if(!$episode){
+                $episode = Episode::create([
+                    'number' => $i,
+                    'description' => $request->description,
+                    'created_by' => Auth::id(),
+                    'anime_id' => $id,
+                ]);
+            }
+            $server = Servers::create([
+                'name' => $request->server_name,
+                'url' => $links[$i],
+                'purpose' => $request->purpose,
+                'episode_id' => $episode->id,
+            ]);
+        }
+        return ['success' => ($to - $from + 1) . ' episodes created successfully!'];
+    }
     public function uploadVideo($request){
         $video = $request->file('video');
         if($video){

@@ -114,6 +114,7 @@ Route::get('/email/verify/already-success', function(){
     'prefix' => 'admin',
 ], function () {
     Route::post('/animes/{id}/episode/', [AdminEpisodeController::class, 'store'])->name('episode.create');
+    Route::post('/animes/{id}/episode/multi', [AdminEpisodeController::class, 'MultiStore'])->name('episode.create.multi');
     Route::get('/animes/episode/{id}', [AdminEpisodeController::class, 'show'])->name('episode.details');
     Route::patch('/animes/episode/{id}', [AdminEpisodeController::class, 'update'])->name('episode.update');
     Route::delete('/animes/episode/{id}', [AdminEpisodeController::class, 'destroy'])->name('episode.delete');
